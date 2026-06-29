@@ -123,6 +123,7 @@ export interface PMSettings {
   notificationsEnabled: boolean
   notificationLeadDays: number
   autoSchedule: boolean
+  autoProgressMode: 'off' | 'status'
   kanbanShowSubtasks: boolean
   kanbanShowDescriptionPreview: boolean
   saveTaskOnClose: boolean
@@ -162,6 +163,7 @@ export const DEFAULT_SETTINGS: PMSettings = {
   notificationsEnabled: true,
   notificationLeadDays: 2,
   autoSchedule: true,
+  autoProgressMode: 'off',
   saveTaskOnClose: true,
   projectFilters: {},
   collapsedTasks: {}

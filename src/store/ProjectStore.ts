@@ -1,7 +1,7 @@
 import type { Plugin, TAbstractFile } from 'obsidian'
 import { App, Notice, TFile, TFolder, normalizePath } from 'obsidian'
-import type { Project, StatusConfig, Task } from '../types'
-import { makeProject, makeTask } from '../types'
+import type { PMSettings, Project, StatusConfig, Task } from '../types'
+import { makeProject, makeTask, DEFAULT_SETTINGS } from '../types'
 import { today } from '../dates'
 import { isTerminalStatus } from '../utils'
 import { archiveTask as doArchiveTask, unarchiveTask as doUnarchiveTask } from './ArchiveOps'
@@ -20,6 +20,7 @@ import {
   deleteTaskFromTree,
   flattenTasks,
   moveTaskInTree,
+  recalculateProgress,
   updateTaskInTree
 } from './TaskTreeOps'
 import { hydrateProjectFromFrontmatter, hydrateTaskFromFile, hydrateTasks } from './YamlHydrator'
@@ -134,8 +135,16 @@ export class ProjectStore {
 
   constructor(
     private app: App,
-    private getStatuses: () => StatusConfig[] = () => []
+    private getSettings: () => PMSettings = () => DEFAULT_SETTINGS
   ) {}
+
+  private getStatuses(): StatusConfig[] {
+    return this.getSettings().statuses
+  }
+
+  private getAutoProgressMode(): PMSettings['autoProgressMode'] {
+    return this.getSettings().autoProgressMode
+  }
 
   // ─── Dirty tracking ───────────────────────────────────────────────────────
 
@@ -805,6 +814,23 @@ export class ProjectStore {
     else if (!nowComplete && wasComplete) patch.completed = ''
   }
 
+  /**
+   * Walk up the ancestor chain and recalculate each parent's progress from its
+   * children. Only active when autoProgressMode is 'status'.
+   */
+  private recalcAncestors(project: Project, taskId: string): void {
+    if (this.getAutoProgressMode() !== 'status') return
+    const statuses = this.getStatuses()
+    let currentId = findParentId(project, taskId)
+    while (currentId) {
+      const parent = findTaskById(project, currentId)
+      if (!parent) break
+      parent.progress = recalculateProgress(parent, statuses)
+      this.markDirty(project, [currentId], 'fm')
+      currentId = findParentId(project, currentId)
+    }
+  }
+
   async updateTask(project: Project, taskId: string, patch: Partial<Task>): Promise<void> {
     const task = findTaskById(project, taskId)
     const oldTitle = task?.title
@@ -814,6 +840,15 @@ export class ProjectStore {
     // tree has the new one.
     const oldSubtree = task && patch.subtasks !== undefined ? flattenTasks(task.subtasks).map((f) => f.task) : []
     updateTaskInTree(project.tasks, taskId, patch)
+    if (task) {
+      this.recalcAncestors(project, taskId)
+      // When auto-progress is active, force-recalculate the task's own progress
+      // from its subtasks so a stale patch value never sticks.
+      if (this.getAutoProgressMode() === 'status' && task.subtasks.length) {
+        task.progress = recalculateProgress(task, this.getStatuses())
+        this.markDirty(project, [taskId], 'fm')
+      }
+    }
     const titleChanged = task && patch.title !== undefined && patch.title !== oldTitle
     // Title change renames the file, which forces the rename branch in saveTaskFile
     // (body rewrite). Description/archived/subtasks patches require a body rewrite too.
@@ -884,9 +919,15 @@ export class ProjectStore {
       // Copy a shared patch object before stamping so one task's completion date
       // doesn't bleed onto the next iteration through the same reference.
       const p = { ...raw }
+      // When auto-progress is active, never let a caller manually overwrite
+      // the progress of a parent task (one that has subtasks).
+      if (p.progress !== undefined && this.getAutoProgressMode() === 'status' && task.subtasks.length) {
+        delete p.progress
+      }
       this.stampCompletion(task, p)
       const oldTitle = task.title
       updateTaskInTree(project.tasks, id, p)
+      this.recalcAncestors(project, id)
       const titleChanged = p.title !== undefined && p.title !== oldTitle
       const kind: DirtyKind = patchNeedsBodyRewrite(p) || titleChanged ? 'full' : 'fm'
       this.markDirty(project, [id], kind)

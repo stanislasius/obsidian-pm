@@ -3,6 +3,7 @@ import { confirmDialog } from '../../ui/ModalFactory'
 import type PMPlugin from '../../main'
 import type { Project, FilterState } from '../../types'
 import { safeAsync } from '../../utils'
+import { findTaskById } from '../../store/TaskIndex'
 import type { SubView } from '../SubView'
 import { renderTable, refreshTableBody, handleTableKeyDown, ROW_HEIGHT_ESTIMATE } from './TableRenderer'
 import type { SortDir, TableState } from './TableRenderer'
@@ -135,9 +136,22 @@ export class TableView implements SubView {
             }
           }
           break
-        case 'set-progress':
-          await this.plugin.store.updateTasks(this.project, ids, { progress: action.progress })
+        case 'set-progress': {
+          let targetIds = ids
+          if (this.plugin.settings.autoProgressMode === 'status') {
+            targetIds = ids.filter((id) => {
+              const t = findTaskById(this.project, id)
+              return !t?.subtasks.length
+            })
+            if (targetIds.length < ids.length) {
+              new Notice(`Skipped ${ids.length - targetIds.length} parent task(s) with auto-progress enabled`)
+            }
+          }
+          if (targetIds.length) {
+            await this.plugin.store.updateTasks(this.project, targetIds, { progress: action.progress })
+          }
           break
+        }
         case 'set-parent':
           await this.plugin.store.moveTasks(this.project, ids, action.parentId)
           new Notice(`Moved ${taskCount(ids.length)} under new parent`)

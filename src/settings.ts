@@ -147,6 +147,21 @@ export class PMSettingTab extends PluginSettingTab {
         })
       )
 
+    new Setting(containerEl)
+      .setName('Auto-progress')
+      .setDesc('Automatically calculate parent task progress from subtasks.')
+      .addDropdown((dd) =>
+        dd
+          .addOption('off', 'Off (manual)')
+          .addOption('status', 'By subtask status')
+          .setValue(this.plugin.settings.autoProgressMode)
+          .onChange(async (v) => {
+            this.plugin.settings.autoProgressMode = v as PMSettings['autoProgressMode']
+            await this.plugin.saveSettings()
+            this.plugin.refreshProjectViews()
+          })
+      )
+
     // ── Team Members ──────────────────────────────────────────────────────────
     new Setting(containerEl).setName('Team members').setHeading()
 

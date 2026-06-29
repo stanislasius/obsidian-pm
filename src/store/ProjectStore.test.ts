@@ -2,7 +2,7 @@ import type { App } from 'obsidian'
 import { TFile } from 'obsidian'
 import { describe, expect, it, vi } from 'vitest'
 import { makeFakeApp, type FakeVault } from '../../test/fakeVault'
-import { makeTask, type Project, type StatusConfig, type Task } from '../types'
+import { makeTask, DEFAULT_SETTINGS, type PMSettings, type Project, type StatusConfig, type Task } from '../types'
 import { ProjectStore } from './ProjectStore'
 import { buildTaskIndex } from './TaskIndex'
 import { flattenTasks } from './TaskTreeOps'
@@ -18,9 +18,13 @@ const STATUSES: StatusConfig[] = [
   { id: 'done', label: 'Done', color: '#0a0', icon: 'check', complete: true }
 ]
 
+function makeSettings(): PMSettings {
+  return { ...DEFAULT_SETTINGS, statuses: STATUSES }
+}
+
 function newStore(): { store: ProjectStore; vault: FakeVault; app: App } {
   const { app, vault } = makeFakeApp()
-  const store = new ProjectStore(app as unknown as App, () => STATUSES)
+  const store = new ProjectStore(app as unknown as App, () => makeSettings())
   return { store, vault, app: app as unknown as App }
 }
 
@@ -182,7 +186,7 @@ describe('ProjectStore round-trip', () => {
     const childOfA = await addNamed(store, project, 'Sub of design', a.id)
 
     // Fresh store, same vault. Reload from disk.
-    const store2 = new ProjectStore(app, () => STATUSES)
+    const store2 = new ProjectStore(app, () => makeSettings())
     const file = vault.getAbstractFileByPath(project.filePath)
     if (!(file instanceof TFile)) throw new Error('project file missing')
     const reloaded = await store2.loadProject(file)
@@ -299,7 +303,7 @@ describe('ProjectStore completion date', () => {
     const task = await addNamed(store, project, 'Archive me')
     await store.updateTask(project, task.id, { status: 'done' })
 
-    const store2 = new ProjectStore(app, () => STATUSES)
+    const store2 = new ProjectStore(app, () => makeSettings())
     const file = vault.getAbstractFileByPath(project.filePath)
     if (!(file instanceof TFile)) throw new Error('project file missing')
     const reloaded = await store2.loadProject(file)
@@ -437,7 +441,7 @@ describe('ProjectStore metadataCache fast path', () => {
       title: 'task',
       projectId: project.id
     })
-    const store2 = new ProjectStore(app, () => STATUSES)
+    const store2 = new ProjectStore(app, () => makeSettings())
     const projectFile = vault.getAbstractFileByPath(project.filePath)
     if (!(projectFile instanceof TFile)) throw new Error('project file missing')
     const reloaded = await store2.loadProject(projectFile)
@@ -462,7 +466,7 @@ describe('ProjectStore metadataCache fast path', () => {
       title: 'preserve me',
       projectId: project.id
     })
-    const store2 = new ProjectStore(app, () => STATUSES)
+    const store2 = new ProjectStore(app, () => makeSettings())
     const projectFile = vault.getAbstractFileByPath(project.filePath)
     if (!(projectFile instanceof TFile)) throw new Error('project file missing')
     const reloaded = await store2.loadProject(projectFile)
@@ -491,7 +495,7 @@ describe('ProjectStore metadataCache fast path', () => {
       title: 'editable',
       projectId: project.id
     })
-    const store2 = new ProjectStore(app, () => STATUSES)
+    const store2 = new ProjectStore(app, () => makeSettings())
     const projectFile = vault.getAbstractFileByPath(project.filePath)
     if (!(projectFile instanceof TFile)) throw new Error('project file missing')
     const reloaded = await store2.loadProject(projectFile)
@@ -579,7 +583,7 @@ describe('ProjectStore task index', () => {
     await addNamed(store, project, 'Child', a.id)
     await addNamed(store, project, 'Beta')
 
-    const store2 = new ProjectStore(app, () => STATUSES)
+    const store2 = new ProjectStore(app, () => makeSettings())
     const file = vault.getAbstractFileByPath(project.filePath)
     if (!(file instanceof TFile)) throw new Error('missing file')
     const reloaded = await store2.loadProject(file)
@@ -597,7 +601,7 @@ describe('ProjectStore editor subtask save', () => {
   const reload = async (app: App, vault: FakeVault, path: string): Promise<Project> => {
     const file = vault.getAbstractFileByPath(path)
     if (!(file instanceof TFile)) throw new Error('missing file')
-    return expectDefined(await new ProjectStore(app, () => STATUSES).loadProject(file))
+    return expectDefined(await new ProjectStore(app, () => makeSettings()).loadProject(file))
   }
 
   it('persists a subtask added through updateTask (the task editor save path)', async () => {

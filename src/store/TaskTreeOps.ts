@@ -1,5 +1,6 @@
-import type { Task } from '../types'
+import type { StatusConfig, Task } from '../types'
 import { makeId } from '../types'
+import { isTerminalStatus } from '../utils'
 
 /** Flatten a task tree into a list, preserving depth info */
 export interface FlatTask {
@@ -168,4 +169,15 @@ export function collectAllTags(tasks: Task[]): string[] {
 export function totalLoggedHours(task: Task): number {
   if (!task.timeLogs?.length) return 0
   return task.timeLogs.reduce((sum, log) => sum + log.hours, 0)
+}
+
+/**
+ * Recalculate a parent task's progress based on its subtasks.
+ * Mode 'status': percentage of subtasks in a terminal (complete) status.
+ * Returns the recalculated value (0-100). For leaf tasks returns task.progress unchanged.
+ */
+export function recalculateProgress(task: Task, statuses: StatusConfig[]): number {
+  if (!task.subtasks.length) return task.progress
+  const done = task.subtasks.filter((s) => isTerminalStatus(s.status, statuses)).length
+  return Math.round((done / task.subtasks.length) * 100)
 }

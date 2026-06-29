@@ -3,6 +3,7 @@ import type PMPlugin from '../main'
 import type { Task } from '../types'
 import { makeTask } from '../types'
 import { getStatusConfig, isTerminalStatus, getCompleteStatusId, getDefaultStatusId } from '../utils'
+import { recalculateProgress } from '../store/TaskTreeOps'
 
 /**
  * Renders the subtasks section (list + add button) into the given container.
@@ -26,6 +27,9 @@ export function renderSubtasksPanel(container: HTMLElement, task: Task, plugin: 
       check.addEventListener('change', () => {
         sub.status = check.checked ? getCompleteStatusId(statuses) : getDefaultStatusId(statuses)
         sub.progress = check.checked ? 100 : 0
+        if (plugin.settings.autoProgressMode === 'status') {
+          task.progress = recalculateProgress(task, plugin.settings.statuses)
+        }
         renderSubtasks()
       })
 

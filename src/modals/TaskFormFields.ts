@@ -129,9 +129,24 @@ export function renderTaskFormFields(container: HTMLElement, ctx: TaskFormFields
   if (task.type !== 'milestone') {
     renderPropRow(container, 'Progress', () => {
       const wrap = createDiv()
-      return renderProgressSlider(wrap, task.progress, (v) => {
-        task.progress = v
-      })
+      if (ctx.plugin.settings.autoProgressMode === 'status') {
+        if (task.subtasks.length) {
+          wrap.createSpan({
+            text: `\u{1F504} Auto: ${task.progress}%`,
+            cls: 'pm-prop-value pm-auto-progress-label'
+          })
+        } else {
+          wrap.createSpan({
+            text: 'Add subtasks to track progress',
+            cls: 'pm-prop-value pm-auto-progress-hint'
+          })
+        }
+      } else {
+        renderProgressSlider(wrap, task.progress, (v) => {
+          task.progress = v
+        })
+      }
+      return wrap
     })
   }
 
