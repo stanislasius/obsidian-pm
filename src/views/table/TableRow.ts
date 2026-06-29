@@ -137,7 +137,18 @@ export function renderTaskRow(tbody: HTMLElement, task: Task, depth: number, ctx
 
   for (const cf of ctx.project.customFields) {
     const val = task.customFields[cf.id]
-    new CustomFieldCell(row, val, cf)
+    new CustomFieldCell(row, {
+      val,
+      field: cf,
+      ...(cf.type === 'date' && {
+        onSave: async (newVal) => {
+          await ctx.plugin.store.updateTask(ctx.project, task.id, {
+            customFields: { ...task.customFields, [cf.id]: newVal }
+          })
+          await ctx.onRefresh()
+        }
+      })
+    })
   }
 
   new ActionsCell(row, {
