@@ -9,18 +9,18 @@ export function stringToColor(s: string): string {
   return `hsl(${Math.abs(hash) % 360}, 55%, 45%)`
 }
 
-/** Short date: "Mar 28" */
+/** Short date: "dd-mm" */
 export function formatDateShort(iso: string): string {
   if (!iso) return ''
-  const d = new Date(iso)
-  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+  const [, m, d] = iso.split('-')
+  return `${d}-${m}`
 }
 
-/** Long date: "Mar 28, '26" */
+/** Long date: "dd-mm-YYYY" */
 export function formatDateLong(iso: string): string {
   if (!iso) return ''
-  const d = new Date(iso)
-  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: '2-digit' })
+  const [y, m, d] = iso.split('-')
+  return `${d}-${m}-${y}`
 }
 
 /** Is a status marked as terminal (complete) in the config? */

@@ -13,7 +13,7 @@ type SortDir = 'asc' | 'desc'
 export type { SortKey, SortDir }
 
 export interface TableState {
-  sortKey: SortKey
+  sortKey: string
   sortDir: SortDir
   filter: FilterState
   selectedTaskId: string | null
@@ -122,8 +122,27 @@ export function renderTable(ctx: TableContext): void {
   }
 
   for (const cf of ctx.project.customFields) {
-    const th = hrow.createEl('th', { text: cf.name })
+    const th = hrow.createEl('th')
     th.setCssStyles({ width: '120px' })
+    th.addClass('pm-table-th-sortable')
+    th.setAttribute('role', 'button')
+    th.setAttribute('aria-label', `Sort by ${cf.name}`)
+    th.createSpan({ text: cf.name })
+    if (ctx.state.sortKey === cf.id) {
+      th.createSpan({
+        text: ctx.state.sortDir === 'asc' ? ' \u2191' : ' \u2193',
+        cls: 'pm-sort-indicator'
+      })
+    }
+    th.addEventListener('click', () => {
+      if (ctx.state.sortKey === cf.id) {
+        ctx.state.sortDir = ctx.state.sortDir === 'asc' ? 'desc' : 'asc'
+      } else {
+        ctx.state.sortKey = cf.id
+        ctx.state.sortDir = 'asc'
+      }
+      refreshTableBody(ctx)
+    })
   }
 
   // Actions column header (must be last)
@@ -170,7 +189,7 @@ function fillTableBody(ctx: TableContext): void {
     list.push(f)
   }
   for (const list of childrenByParent.values()) {
-    list.sort((a, b) => compareTask(a.task, b.task, ctx.state, ctx.plugin.settings.statuses))
+    list.sort((a, b) => compareTask(a.task, b.task, ctx.state, ctx.plugin.settings.statuses, ctx.project.customFields))
   }
 
   const sorted: FlatTask[] = []

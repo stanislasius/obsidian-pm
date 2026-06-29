@@ -1,5 +1,5 @@
 import { Menu } from 'obsidian'
-import { getStatusConfig, isTaskOverdue, isTerminalStatus, safeAsync, stringifyCustomValue } from '../../utils'
+import { getStatusConfig, isTaskOverdue, isTerminalStatus, safeAsync } from '../../utils'
 import { totalLoggedHours } from '../../store/TaskTreeOps'
 import { today, parsePlainDate } from '../../dates'
 import type { Task } from '../../types'
@@ -137,7 +137,7 @@ export function renderTaskRow(tbody: HTMLElement, task: Task, depth: number, ctx
 
   for (const cf of ctx.project.customFields) {
     const val = task.customFields[cf.id]
-    new CustomFieldCell(row, val !== undefined ? stringifyCustomValue(val) : '')
+    new CustomFieldCell(row, val, cf)
   }
 
   new ActionsCell(row, {

@@ -5,7 +5,7 @@ import type { Project, FilterState } from '../../types'
 import { safeAsync } from '../../utils'
 import type { SubView } from '../SubView'
 import { renderTable, refreshTableBody, handleTableKeyDown, ROW_HEIGHT_ESTIMATE } from './TableRenderer'
-import type { SortKey, SortDir, TableState } from './TableRenderer'
+import type { SortDir, TableState } from './TableRenderer'
 import { updateSelectAllCheckbox } from './TableRow'
 import { renderBulkActionBar } from './BulkActionBar'
 import type { BulkAction } from './BulkActionBar'
@@ -13,7 +13,7 @@ import type { BulkAction } from './BulkActionBar'
 const taskCount = (n: number) => `${n} task${n === 1 ? '' : 's'}`
 
 export interface TableViewState {
-  sortKey: SortKey
+  sortKey: string
   sortDir: SortDir
 }
 
