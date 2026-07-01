@@ -1,9 +1,9 @@
-import { ButtonComponent } from 'obsidian'
+import { ButtonComponent, setIcon } from 'obsidian'
 import type PMPlugin from '../main'
 import type { Project, Task } from '../types'
 import { makeTask } from '../types'
 import { promptText } from '../ui/ModalFactory'
-import { getStatusConfig, isTerminalStatus, getCompleteStatusId, getDefaultStatusId } from '../utils'
+import { isTerminalStatus, getCompleteStatusId, getDefaultStatusId } from '../utils'
 import { recalculateProgress } from '../store/TaskTreeOps'
 
 export function renderSubtasksPanel(
@@ -13,6 +13,7 @@ export function renderSubtasksPanel(
   project?: Project,
   onSaveAsTemplate?: (name: string, subtaskTitles: string[]) => void | Promise<void>
 ): void {
+  const statuses = plugin.settings.statuses
   const subSection = container.createDiv('pm-modal-section')
   const subHeader = subSection.createDiv('pm-modal-section-header')
   const subList = subSection.createDiv('pm-modal-subtask-list')
@@ -21,7 +22,14 @@ export function renderSubtasksPanel(
     subHeader.empty()
     subList.empty()
 
-    subHeader.createEl('h4', { text: `Subtasks (${task.subtasks.length})`, cls: 'pm-modal-section-title' })
+    const heading = subHeader.createEl('h4', { text: `Subtasks (${task.subtasks.length})`, cls: 'pm-modal-section-title' })
+    const countEl = heading.createSpan({ cls: 'pm-subtasks-count' })
+    const total = task.subtasks.length
+    if (total > 0) {
+      const done = task.subtasks.filter((s) => isTerminalStatus(s.status, statuses)).length
+      countEl.setText(`${done}/${total}`)
+    }
+
     new ButtonComponent(subHeader).setButtonText('+ add').onClick(() => {
       const newSub = makeTask({ title: 'New subtask', type: 'subtask' })
       task.subtasks.push(newSub)
@@ -53,22 +61,17 @@ export function renderSubtasksPanel(
 
     for (const sub of task.subtasks) {
       const row = subList.createDiv('pm-modal-subtask-row')
-      const subStatus = getStatusConfig(plugin.settings.statuses, sub.status)
 
-      const statuses = plugin.settings.statuses
-      const check = row.createEl('input', { type: 'checkbox', cls: 'pm-subtask-checkbox' })
-      check.checked = isTerminalStatus(sub.status, statuses)
-      check.addEventListener('change', () => {
-        sub.status = check.checked ? getCompleteStatusId(statuses) : getDefaultStatusId(statuses)
-        sub.progress = check.checked ? 100 : 0
+      const cb = row.createEl('input', { type: 'checkbox', cls: 'pm-subtask-checkbox' })
+      cb.checked = isTerminalStatus(sub.status, statuses)
+      cb.addEventListener('change', () => {
+        sub.status = cb.checked ? getCompleteStatusId(statuses) : getDefaultStatusId(statuses)
+        sub.progress = cb.checked ? 100 : 0
         if (plugin.settings.autoProgressMode === 'status') {
           task.progress = recalculateProgress(task, plugin.settings.statuses)
         }
         renderAll()
       })
-
-      const dot = row.createSpan({ cls: 'pm-subtask-dot' })
-      dot.setCssStyles({ background: subStatus?.color ?? 'var(--text-muted)' })
 
       const titleEl = row.createSpan({ text: sub.title, cls: 'pm-subtask-title' })
       titleEl.contentEditable = 'true'
@@ -76,7 +79,8 @@ export function renderSubtasksPanel(
         sub.title = titleEl.textContent?.trim() ?? sub.title
       })
 
-      const rm = row.createEl('button', { text: '\u2715', cls: 'pm-subtask-rm' })
+      const rm = row.createEl('button', { cls: 'pm-subtask-rm' })
+      setIcon(rm, 'x')
       rm.addEventListener('click', () => {
         task.subtasks = task.subtasks.filter((s) => s.id !== sub.id)
         renderAll()

@@ -1,10 +1,20 @@
-import { App, ButtonComponent, Component, ExtraButtonComponent, Modal, MarkdownRenderer, Notice } from 'obsidian'
+import {
+  App,
+  ButtonComponent,
+  Component,
+  ExtraButtonComponent,
+  Menu,
+  Modal,
+  MarkdownRenderer,
+  Notice,
+  setIcon,
+  setTooltip
+} from 'obsidian'
 import type PMPlugin from '../main'
-import { Project, Task, TaskTemplate, makeTask, makeId, makeTemplate } from '../types'
+import { Project, Task, makeTask, makeId, makeTemplate } from '../types'
 import { flattenTasks } from '../store/TaskTreeOps'
 import { TaskFileNameConflictError } from '../store'
-import { safeAsync, getDefaultStatusId } from '../utils'
-import { renderStatusDot } from '../ui/StatusBadge'
+import { safeAsync, getDefaultStatusId, getPriorityConfig } from '../utils'
 import { confirmDialog } from '../ui/ModalFactory'
 import { renderTaskFormFields } from './TaskFormFields'
 import { renderTimeTrackingPanel } from './TimeTrackingPanel'
@@ -19,6 +29,8 @@ export class TaskModal extends Modal {
   private saved = false
   private persistPromise: Promise<void> | null = null
   private noteSuggest: NoteLinkSuggest | null = null
+  private shownExtras = new Set<string>()
+  private saveKeyHandler: ((e: KeyboardEvent) => void) | null = null
   private selectedTemplateId: string | null = null
 
   constructor(
@@ -34,7 +46,6 @@ export class TaskModal extends Modal {
     if (task) {
       this.task = JSON.parse(JSON.stringify(task)) as Task
       this.isNew = false
-      // Compute current parentId from tree if not explicitly provided
       if (parentId == null) {
         const flat = flattenTasks(project.tasks)
         const entry = flat.find((f) => f.task.id === task.id)
@@ -56,7 +67,8 @@ export class TaskModal extends Modal {
     const { contentEl } = this
     contentEl.empty()
     contentEl.addClass('pm-task-modal')
-    this.modalEl.addClass('pm-modal')
+    this.modalEl.addClass('pm-modal', 'pm-modal--task')
+    void this.plugin.store.loadTemplates(this.project)
     this.render()
   }
 
@@ -74,6 +86,10 @@ export class TaskModal extends Modal {
       } else {
         void this.persistTask()
       }
+    }
+    if (this.saveKeyHandler) {
+      this.modalEl.removeEventListener('keydown', this.saveKeyHandler)
+      this.saveKeyHandler = null
     }
     this.noteSuggest?.destroy()
     this.noteSuggest = null
@@ -129,21 +145,126 @@ export class TaskModal extends Modal {
     await this.onSave(this.task)
   }
 
+  private openOverflowMenu(anchorEl: HTMLElement): void {
+    const menu = new Menu()
+    if (this.task.filePath) {
+      const filePath = this.task.filePath
+      menu.addItem((item) =>
+        item
+          .setTitle('Open as note')
+          .setIcon('file-text')
+          .onClick(() => {
+            this.saved = false
+            this.cancelled = false
+            this.close()
+            void this.app.workspace.openLinkText(filePath, '', true)
+          })
+      )
+      menu.addSeparator()
+    }
+    if (this.task.archived) {
+      menu.addItem((item) =>
+        item
+          .setTitle('Unarchive')
+          .setIcon('archive-restore')
+          .onClick(
+            safeAsync(async () => {
+              await this.plugin.store.unarchiveTask(this.project, this.task.id)
+              new Notice('Task unarchived')
+              await this.onSave(this.task)
+              this.cancelled = true
+              this.close()
+            })
+          )
+      )
+    } else {
+      menu.addItem((item) =>
+        item
+          .setTitle('Archive')
+          .setIcon('archive')
+          .onClick(
+            safeAsync(async () => {
+              await this.plugin.store.archiveTask(this.project, this.task.id)
+              new Notice('Task archived')
+              await this.onSave(this.task)
+              this.cancelled = true
+              this.close()
+            })
+          )
+      )
+    }
+    menu.addItem((item) =>
+      item
+        .setTitle('Delete')
+        .setIcon('trash-2')
+        .setWarning(true)
+        .onClick(
+          safeAsync(async () => {
+            if (await confirmDialog(this.app, `Delete "${this.task.title}"?`)) {
+              await this.plugin.store.deleteTask(this.project, this.task.id)
+              await this.onSave(this.task)
+              this.cancelled = true
+              this.close()
+            }
+          })
+        )
+    )
+    const rect = anchorEl.getBoundingClientRect()
+    menu.showAtPosition({ x: rect.left, y: rect.bottom + 4 })
+  }
+
   private render(): void {
     const { contentEl } = this
     contentEl.empty()
 
-    // ── Header ──────────────────────────────────────────────────────────────
-    const header = contentEl.createDiv('pm-modal-header')
-    renderStatusDot(header, this.task.status, this.plugin.settings.statuses, 'pm-modal-status-dot')
+    const header = contentEl.createDiv('pm-te-header')
+    const prio = getPriorityConfig(this.plugin.settings.priorities, this.task.priority)
+    if (prio?.color) header.setCssProps({ '--pm-accent-strip': prio.color })
+    const crumb = header.createDiv('pm-te-crumb')
+    if (this.project.icon) {
+      const iconEl = crumb.createSpan({ cls: 'pm-te-crumb-icon' })
+      if (/^[a-z0-9-]+$/.test(this.project.icon)) setIcon(iconEl, this.project.icon)
+      else iconEl.setText(this.project.icon)
+    }
+    crumb.createSpan({ cls: 'pm-te-crumb-name', text: this.project.title })
+    const crumbSep = crumb.createSpan({ cls: 'pm-te-crumb-sep' })
+    setIcon(crumbSep, 'chevron-right')
+    const idEl = crumb.createSpan({ cls: 'pm-te-crumb-id pm-te-copyable', text: this.task.id })
+    setTooltip(idEl, 'Copy task ID')
+    idEl.addEventListener(
+      'click',
+      safeAsync(async () => {
+        await navigator.clipboard.writeText(this.task.id)
+        new Notice('Copied task ID')
+      })
+    )
 
-    const titleWrap = header.createDiv('pm-modal-title-wrap')
-    const titleInput = titleWrap.createEl('input', {
-      type: 'text',
-      cls: 'pm-modal-title-input',
-      value: this.task.title
+    header.createDiv('pm-te-header-spacer')
+
+    if (!this.isNew) {
+      const moreBtn = new ExtraButtonComponent(header).setIcon('more-horizontal').setTooltip('More actions')
+      moreBtn.extraSettingsEl.addClass('pm-te-header-btn')
+      moreBtn.onClick(() => this.openOverflowMenu(moreBtn.extraSettingsEl))
+    }
+    const closeBtn = new ExtraButtonComponent(header).setIcon('x').setTooltip('Close')
+    closeBtn.extraSettingsEl.addClass('pm-te-header-btn')
+    closeBtn.onClick(() => {
+      this.cancelled = true
+      this.close()
     })
-    titleInput.placeholder = 'Task title\u2026'
+
+    const body = contentEl.createDiv('pm-te-body')
+
+    const titleWrap = body.createDiv('pm-te-title-wrap')
+    const titleInput = titleWrap.createEl('textarea', { cls: 'pm-te-title' })
+    titleInput.rows = 1
+    titleInput.value = this.task.title
+    titleInput.placeholder = 'Task title'
+    titleInput.spellcheck = false
+    const autosizeTitle = () => {
+      titleInput.setCssProps({ '--te-title-height': 'auto' })
+      titleInput.setCssProps({ '--te-title-height': titleInput.scrollHeight + 'px' })
+    }
     const titleError = titleWrap.createDiv({ cls: 'pm-modal-title-error', attr: { hidden: '' } })
     const clearTitleError = () => {
       if (titleError.hasAttribute('hidden')) return
@@ -161,30 +282,36 @@ export class TaskModal extends Modal {
     titleInput.addEventListener('input', () => {
       this.task.title = titleInput.value
       clearTitleError()
+      autosizeTitle()
     })
+    titleInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) e.preventDefault()
+    })
+    window.setTimeout(autosizeTitle, 0)
     titleInput.focus()
-    titleInput.select()
+    if (this.isNew) titleInput.select()
 
-    if (!this.isNew && this.task.filePath) {
-      const filePath = this.task.filePath
-      new ExtraButtonComponent(header)
-        .setIcon('file-text')
-        .setTooltip('Open as note')
-        .onClick(() => {
-          this.saved = false
-          this.cancelled = false
-          this.close()
-          void this.app.workspace.openLinkText(filePath, '', true)
-        })
-    }
+    const props = body.createDiv('pm-te-props')
+    renderTaskFormFields(props, {
+      task: this.task,
+      project: this.project,
+      plugin: this.plugin,
+      parentId: this.parentId,
+      setParentId: (id) => {
+        this.parentId = id
+      },
+      rerender: () => this.render(),
+      shownExtras: this.shownExtras
+    })
 
-    // ── Description (preview / edit) ─────────────────────────────────────────
-    const descSection = contentEl.createDiv('pm-modal-section pm-modal-desc-section')
+    body.createEl('hr', { cls: 'pm-te-divider' })
+
+    const descSection = body.createDiv('pm-modal-section pm-modal-desc-section')
     descSection.createEl('h4', { text: 'Description', cls: 'pm-modal-section-title' })
 
     const descPreview = descSection.createDiv('pm-modal-desc-preview')
     const descArea = descSection.createEl('textarea', { cls: 'pm-modal-description' })
-    descArea.placeholder = 'Add a description\u2026'
+    descArea.placeholder = 'Add a description…'
     descArea.value = this.task.description
 
     const autoResize = () => {
@@ -229,8 +356,6 @@ export class TaskModal extends Modal {
       })
     }
 
-    // MarkdownRenderer emits external anchors with target="_blank"; Electron
-    // silently drops file:// under that, so route file:// clicks through window.open.
     const attachFileLinkHandlers = () => {
       descPreview.querySelectorAll<HTMLAnchorElement>('a.external-link').forEach((a) => {
         if (!a.href.startsWith('file://')) return
@@ -312,7 +437,6 @@ export class TaskModal extends Modal {
       void this.insertAttachments(descArea, attachments, autoResize)
     })
 
-    // Note link suggest (inline [[ autocomplete)
     this.noteSuggest?.destroy()
     this.noteSuggest = new NoteLinkSuggest(this.app, descArea, (newValue) => {
       this.task.description = newValue
@@ -325,9 +449,7 @@ export class TaskModal extends Modal {
       if (target.instanceOf(HTMLInputElement) && target.type === 'checkbox') return
 
       const link = target.closest('a')
-
       if (link) {
-        // Internal link (Obsidian note link)
         if (link.classList.contains('internal-link')) {
           e.preventDefault()
           e.stopPropagation()
@@ -338,11 +460,9 @@ export class TaskModal extends Modal {
           void this.app.workspace.openLinkText(href, sourcePath)
           return
         }
-        // External link - let browser handle it
         return
       }
 
-      // Click on non-link text = edit
       showEdit()
     })
 
@@ -354,26 +474,8 @@ export class TaskModal extends Modal {
       window.setTimeout(autoResize, 0)
     }
 
-    // ── Properties ─────────────────────────────────────────────────────────
-    const propsContainer = contentEl.createDiv('pm-modal-props-container')
-    const props = propsContainer.createDiv('pm-modal-props')
-
-    renderTaskFormFields(props, {
-      task: this.task,
-      project: this.project,
-      plugin: this.plugin,
-      parentId: this.parentId,
-      setParentId: (id) => {
-        this.parentId = id
-      },
-      rerender: () => this.render()
-    })
-
-    // ── Time Tracking ───────────────────────────────────────────────────────
-    renderTimeTrackingPanel(contentEl, this.task)
-
-    // ── Subtask template selector ───────────────────────────────────────────
-    const tplSection = contentEl.createDiv('pm-modal-section')
+    // ── Template selector ───────────────────────────────────────────────────
+    const tplSection = body.createDiv('pm-modal-section')
     const tplWrap = tplSection.createDiv('pm-template-selector')
     tplWrap.createSpan({ text: 'Template:', cls: 'pm-modal-section-title' })
     if (this.project.taskTemplates.length > 0) {
@@ -405,7 +507,7 @@ export class TaskModal extends Modal {
     }
 
     // ── Subtasks ────────────────────────────────────────────────────────────
-    renderSubtasksPanel(contentEl, this.task, this.plugin, this.project, async (name, titles) => {
+    renderSubtasksPanel(body, this.task, this.plugin, this.project, async (name, titles) => {
       const newTpl = makeTemplate(name)
       newTpl.subtasks = titles.map((t) => ({ title: t }))
       await this.plugin.store.saveTemplate(this.project, newTpl)
@@ -414,45 +516,26 @@ export class TaskModal extends Modal {
       this.render()
     })
 
+    // ── Time tracking ─────────────────────────────────────────────────────────
+    renderTimeTrackingPanel(body, this.task)
+
     // ── Footer ──────────────────────────────────────────────────────────────
-    const footer = contentEl.createDiv('pm-modal-footer')
+    const footer = contentEl.createDiv('pm-te-footer')
 
-    if (!this.isNew) {
-      if (this.task.archived) {
-        new ButtonComponent(footer).setButtonText('Unarchive').onClick(
-          safeAsync(async () => {
-            await this.plugin.store.unarchiveTask(this.project, this.task.id)
-            new Notice('Task unarchived')
-            await this.onSave(this.task)
-            this.cancelled = true
-            this.close()
-          })
-        )
-      } else {
-        new ButtonComponent(footer).setButtonText('Archive').onClick(
-          safeAsync(async () => {
-            await this.plugin.store.archiveTask(this.project, this.task.id)
-            new Notice('Task archived')
-            await this.onSave(this.task)
-            this.cancelled = true
-            this.close()
-          })
-        )
-      }
-
-      new ButtonComponent(footer)
-        .setButtonText('Delete')
-        .setWarning()
-        .onClick(
-          safeAsync(async () => {
-            if (await confirmDialog(this.app, `Delete "${this.task.title}"?`)) {
-              await this.plugin.store.deleteTask(this.project, this.task.id)
-              await this.onSave(this.task)
-              this.cancelled = true
-              this.close()
-            }
-          })
-        )
+    if (!this.isNew && this.task.filePath) {
+      const filePath = this.task.filePath
+      const pathHint = footer.createSpan({ cls: 'pm-te-footer-path pm-te-copyable' })
+      const fileIcon = pathHint.createSpan({ cls: 'pm-te-footer-icon' })
+      setIcon(fileIcon, 'file-text')
+      pathHint.createSpan({ text: filePath })
+      setTooltip(pathHint, 'Copy file path')
+      pathHint.addEventListener(
+        'click',
+        safeAsync(async () => {
+          await navigator.clipboard.writeText(filePath)
+          new Notice('Copied file path')
+        })
+      )
     }
 
     footer.createDiv('pm-footer-spacer')
@@ -494,11 +577,14 @@ export class TaskModal extends Modal {
     saveBtn.onClick(() => {
       void doSave()
     })
-    this.modalEl.addEventListener('keydown', (e: KeyboardEvent) => {
+
+    if (this.saveKeyHandler) this.modalEl.removeEventListener('keydown', this.saveKeyHandler)
+    this.saveKeyHandler = (e: KeyboardEvent) => {
       if (e.key === 'Enter' && e.shiftKey) {
         e.preventDefault()
         void doSave()
       }
-    })
+    }
+    this.modalEl.addEventListener('keydown', this.saveKeyHandler)
   }
 }

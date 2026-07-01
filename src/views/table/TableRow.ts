@@ -76,6 +76,7 @@ export function renderTaskRow(tbody: HTMLElement, task: Task, depth: number, ctx
   new TitleCell(row, {
     task,
     depth,
+    showTagColors: ctx.plugin.settings.showTagColors,
     onTitleClick: () => {
       openTaskModal(ctx.plugin, ctx.project, {
         task,

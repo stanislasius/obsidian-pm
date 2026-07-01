@@ -133,6 +133,7 @@ export interface PMSettings {
   autoProgressMode: 'off' | 'status'
   kanbanShowSubtasks: boolean
   kanbanShowDescriptionPreview: boolean
+  showTagColors: boolean
   saveTaskOnClose: boolean
   projectFilters: Record<string, PerProjectFilter>
   /** Collapsed task ids per project file path. UI state — lives here so toggles don't rewrite task files. */
@@ -166,6 +167,7 @@ export const DEFAULT_SETTINGS: PMSettings = {
   priorities: DEFAULT_PRIORITIES,
   kanbanShowSubtasks: false,
   kanbanShowDescriptionPreview: false,
+  showTagColors: true,
   notificationsEnabled: true,
   notificationLeadDays: 2,
   autoSchedule: true,
