@@ -1,4 +1,4 @@
-import type { Task, TaskPriority, StatusConfig, CustomFieldDef } from '../../types'
+import type { Task, TaskPriority, StatusConfig, PriorityConfig, CustomFieldDef } from '../../types'
 import type { TableState } from './TableRenderer'
 import { statusSortOrder } from '../../utils'
 
@@ -7,6 +7,7 @@ export function compareTask(
   b: Task,
   state: TableState,
   statuses: StatusConfig[] = [],
+  priorities: PriorityConfig[] = [],
   customFields: CustomFieldDef[] = []
 ): number {
   const dir = state.sortDir === 'asc' ? 1 : -1
@@ -16,7 +17,7 @@ export function compareTask(
     case 'status':
       return dir * (statusSortOrder(a.status, statuses) - statusSortOrder(b.status, statuses))
     case 'priority':
-      return dir * priorityOrder(a.priority) - dir * priorityOrder(b.priority)
+      return dir * (priorityOrder(a.priority, priorities) - priorityOrder(b.priority, priorities))
     case 'due':
       return dir * (a.due || 'zzz').localeCompare(b.due || 'zzz')
     case 'progress':
@@ -29,8 +30,9 @@ export function compareTask(
   }
 }
 
-function priorityOrder(p: TaskPriority): number {
-  return { critical: 0, high: 1, medium: 2, low: 3 }[p] ?? 99
+function priorityOrder(p: TaskPriority, priorities: PriorityConfig[]): number {
+  const idx = priorities.findIndex((cfg) => cfg.id === p)
+  return idx >= 0 ? idx : 999
 }
 
 function compareCustomValues(aVal: unknown, bVal: unknown, field: CustomFieldDef): number {
