@@ -1,5 +1,5 @@
 import { Menu } from 'obsidian'
-import { getStatusConfig, isTaskOverdue, isTerminalStatus, projectStatuses, safeAsync } from '../../utils'
+import { getStatusConfig, isTaskOverdue, isTerminalStatus, safeAsync } from '../../utils'
 import { totalLoggedHours } from '../../store/TaskTreeOps'
 import { today, parsePlainDate } from '../../dates'
 import type { Task } from '../../types'
@@ -22,8 +22,8 @@ import { TitleCell } from '../../ui/composites/cells/TitleCell'
 // ─── Row orchestrator ──────────────────────────────────────────────────────────
 
 export function renderTaskRow(tbody: HTMLElement, task: Task, depth: number, ctx: TableContext): void {
-  const isDone = isTerminalStatus(task.status, ctx.plugin.settings.statuses)
-  const statusConfig = getStatusConfig(ctx.plugin.settings.statuses, task.status)
+  const isDone = isTerminalStatus(task.status, ctx.statuses)
+  const statusConfig = getStatusConfig(ctx.statuses, task.status)
 
   const { el: row } = new TaskRow(tbody, {
     taskId: task.id,
@@ -101,7 +101,7 @@ export function renderTaskRow(tbody: HTMLElement, task: Task, depth: number, ctx
 
   new StatusCell(row, {
     task,
-    statuses: projectStatuses(ctx.project, ctx.plugin.settings.statuses),
+    statuses: ctx.statuses,
     onChange: safeAsync(async (status) => {
       await ctx.plugin.store.updateTask(ctx.project, task.id, { status })
       await ctx.onRefresh()
@@ -110,7 +110,7 @@ export function renderTaskRow(tbody: HTMLElement, task: Task, depth: number, ctx
 
   new PriorityCell(row, {
     task,
-    priorities: ctx.plugin.settings.priorities,
+    priorities: ctx.priorities,
     onChange: safeAsync(async (priority) => {
       await ctx.plugin.store.updateTask(ctx.project, task.id, { priority })
       await ctx.onRefresh()
@@ -118,14 +118,14 @@ export function renderTaskRow(tbody: HTMLElement, task: Task, depth: number, ctx
   })
 
   const due = parsePlainDate(task.due)
-  const overdue = isTaskOverdue(task, ctx.plugin.settings.statuses)
+  const overdue = isTaskOverdue(task, ctx.statuses)
   const isNear = !overdue && due !== null && due.since(today(), { largestUnit: 'days' }).days < 3
   new DueDateCell(row, {
     task,
     urgency: overdue ? 'overdue' : isNear ? 'near' : 'normal',
     onSave: async (val) => {
       await ctx.plugin.store.updateTask(ctx.project, task.id, { due: val })
-      await ctx.plugin.store.scheduleAfterChange(ctx.project, task.id, ctx.plugin.settings.statuses)
+      await ctx.plugin.store.scheduleAfterChange(ctx.project, task.id)
       await ctx.onRefresh()
     }
   })

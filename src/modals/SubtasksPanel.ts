@@ -1,6 +1,6 @@
 import { ButtonComponent, setIcon } from 'obsidian'
 import type PMPlugin from '../main'
-import type { Project, Task } from '../types'
+import type { Project, StatusConfig, Task } from '../types'
 import { makeTask } from '../types'
 import { promptText } from '../ui/ModalFactory'
 import { isTerminalStatus, getCompleteStatusId, getDefaultStatusId } from '../utils'
@@ -10,10 +10,10 @@ export function renderSubtasksPanel(
   container: HTMLElement,
   task: Task,
   plugin: PMPlugin,
+  statuses: StatusConfig[],
   project?: Project,
   onSaveAsTemplate?: (name: string, subtaskTitles: string[]) => void | Promise<void>
 ): void {
-  const statuses = plugin.settings.statuses
   const subSection = container.createDiv('pm-modal-section')
   const subHeader = subSection.createDiv('pm-modal-section-header')
   const subList = subSection.createDiv('pm-modal-subtask-list')
@@ -68,7 +68,7 @@ export function renderSubtasksPanel(
         sub.status = cb.checked ? getCompleteStatusId(statuses) : getDefaultStatusId(statuses)
         sub.progress = cb.checked ? 100 : 0
         if (plugin.settings.autoProgressMode === 'status') {
-          task.progress = recalculateProgress(task, plugin.settings.statuses)
+          task.progress = recalculateProgress(task, statuses)
         }
         renderAll()
       })
