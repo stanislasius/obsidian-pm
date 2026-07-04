@@ -1,5 +1,5 @@
 import { Menu } from 'obsidian'
-import { getStatusConfig, isTaskOverdue, isTerminalStatus, safeAsync } from '../../utils'
+import { getStatusConfig, isTaskOverdue, isTerminalStatus, projectStatuses, safeAsync } from '../../utils'
 import { totalLoggedHours } from '../../store/TaskTreeOps'
 import { today, parsePlainDate } from '../../dates'
 import type { Task } from '../../types'
@@ -101,7 +101,7 @@ export function renderTaskRow(tbody: HTMLElement, task: Task, depth: number, ctx
 
   new StatusCell(row, {
     task,
-    statuses: ctx.plugin.settings.statuses,
+    statuses: projectStatuses(ctx.project, ctx.plugin.settings.statuses),
     onChange: safeAsync(async (status) => {
       await ctx.plugin.store.updateTask(ctx.project, task.id, { status })
       await ctx.onRefresh()

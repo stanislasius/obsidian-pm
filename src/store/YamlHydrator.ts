@@ -128,6 +128,9 @@ export function hydrateProjectFromFrontmatter(
     updatedAt: (frontmatter.updatedAt as string) ?? new Date().toISOString(),
     filePath,
     savedViews: hydrateSavedViews((frontmatter.savedViews as unknown[]) ?? []),
+    enabledStatuses: Array.isArray(frontmatter.enabledStatuses)
+      ? [...(frontmatter.enabledStatuses as string[])]
+      : undefined,
     taskIndex: new Map()
   }
 }

@@ -1,8 +1,9 @@
-import { App, ButtonComponent, Modal } from 'obsidian'
+import { App, ButtonComponent, Modal, Notice } from 'obsidian'
 import type PMPlugin from '../main'
 import { Project, CustomFieldDef, TaskTemplate, makeId, makeProject, makeTemplate } from '../types'
 import { rebuildTaskIndex } from '../store'
-import { safeAsync } from '../utils'
+import { formatBadgeText, safeAsync } from '../utils'
+import { renderStatusDot } from '../ui/StatusBadge'
 const PROJECT_COLORS = [
   '#8b72be',
   '#7c6b9a',
@@ -166,6 +167,37 @@ export class ProjectModal extends Modal {
       })
     }
     renderCFs()
+
+    // ── Statuses ──────────────────────────────────────────────────────────────
+    const statusSection = el.createDiv('pm-modal-section')
+    const statusHeader = statusSection.createDiv('pm-modal-section-header')
+    statusHeader.createSpan({ text: 'Statuses', cls: 'pm-modal-subheading' })
+    statusHeader.createSpan({ text: 'Which statuses this project uses', cls: 'pm-modal-hint' })
+
+    const allStatuses = this.plugin.settings.statuses
+    const enabledSet = new Set(
+      this.project.enabledStatuses?.length ? this.project.enabledStatuses : allStatuses.map((s) => s.id)
+    )
+    const statusList = statusSection.createDiv('pm-status-toggle-list')
+    for (const s of allStatuses) {
+      const row = statusList.createEl('label', { cls: 'pm-status-toggle' })
+      const checkbox = row.createEl('input', { type: 'checkbox' })
+      checkbox.checked = enabledSet.has(s.id)
+      renderStatusDot(row, s.id, allStatuses, 'pm-status-toggle-dot')
+      row.createSpan({ text: formatBadgeText(s.icon, s.label) })
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          enabledSet.add(s.id)
+        } else if (enabledSet.size === 1) {
+          checkbox.checked = true
+          new Notice('A project needs at least one status.')
+          return
+        } else {
+          enabledSet.delete(s.id)
+        }
+        this.project.enabledStatuses = enabledSet.size === allStatuses.length ? undefined : [...enabledSet]
+      })
+    }
 
     // ── Task Templates ─────────────────────────────────────────────────────────
     const tplSection = el.createDiv('pm-modal-section')
