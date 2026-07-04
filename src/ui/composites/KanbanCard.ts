@@ -2,7 +2,9 @@ import type { Task } from '../../types'
 import { formatDateShort } from '../../utils'
 import { Chip } from '../primitives/Chip'
 import { ProgressBar } from '../primitives/ProgressBar'
+import { renderDueChip } from './dueChip'
 import { renderTagChip } from './tagChip'
+import { renderTimeChip } from './timeChip'
 
 export interface KanbanCardProps {
   task: Task
@@ -71,14 +73,7 @@ export class KanbanCard {
       body.createDiv({ cls: 'pm-kanban-card-description', text: props.descriptionPreview })
     }
 
-    const est = task.timeEstimate ?? 0
-    if (props.loggedHours > 0 || est > 0) {
-      const label = est > 0 ? `${props.loggedHours}/${est}h` : `${props.loggedHours}h`
-      const timeChip = new Chip(body).setLabel(label).setSize('sm')
-      if (est > 0 && props.loggedHours > est) {
-        timeChip.setVariant('solid').setColor('var(--color-red)').setStrong()
-      }
-    }
+    renderTimeChip(body, props.loggedHours, task.timeEstimate ?? 0, 'sm')
 
     if (task.tags.length) {
       const tagsEl = body.createDiv('pm-kanban-card-tags')
@@ -101,10 +96,7 @@ export class KanbanCard {
 
     const footer = body.createDiv('pm-kanban-card-footer')
     if (task.due) {
-      const dueChip = new Chip(footer).setLabel(formatDateShort(task.due)).setSize('sm')
-      if (props.overdue) {
-        dueChip.setVariant('solid').setColor('var(--color-red)').setStrong()
-      }
+      renderDueChip(footer, formatDateShort(task.due), props.overdue ? 'overdue' : 'normal', 'sm')
     }
 
     card.addEventListener('dragstart', (e) => {

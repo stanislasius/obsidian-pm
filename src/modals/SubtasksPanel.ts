@@ -1,8 +1,9 @@
-import { ButtonComponent, setIcon } from 'obsidian'
+import { ButtonComponent } from 'obsidian'
 import type PMPlugin from '../main'
 import type { Project, StatusConfig, Task } from '../types'
 import { makeTask } from '../types'
 import { promptText } from '../ui/ModalFactory'
+import { IconButton } from '../ui/primitives/IconButton'
 import { isTerminalStatus, getCompleteStatusId, getDefaultStatusId } from '../utils'
 import { recalculateProgress } from '../store/TaskTreeOps'
 
@@ -79,12 +80,14 @@ export function renderSubtasksPanel(
         sub.title = titleEl.textContent?.trim() ?? sub.title
       })
 
-      const rm = row.createEl('button', { cls: 'pm-subtask-rm' })
-      setIcon(rm, 'x')
-      rm.addEventListener('click', () => {
-        task.subtasks = task.subtasks.filter((s) => s.id !== sub.id)
-        renderAll()
-      })
+      new IconButton(row)
+        .setIcon('x')
+        .setTooltip('Remove subtask')
+        .setRevealOnHover(true)
+        .onClick(() => {
+          task.subtasks = task.subtasks.filter((s) => s.id !== sub.id)
+          renderAll()
+        })
     }
   }
 
