@@ -182,7 +182,6 @@
   outline: none;
 }
 
-.pm-prop-assignees,
 .pm-prop-tags,
 .pm-prop-deps {
   flex-wrap: wrap;
@@ -229,6 +228,17 @@
 .pm-modal-description:focus {
   border-color: var(--pm-accent);
   outline: none;
+}
+
+/* Template selector */
+.pm-template-selector {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 0 0 8px;
+}
+.pm-template-select {
+  flex: 1;
 }
 
 /* Subtasks */

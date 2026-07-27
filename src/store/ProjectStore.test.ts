@@ -39,6 +39,11 @@ async function addNamed(
   return task
 }
 
+/** Derive the task's folder path (everything before .md) from its filePath */
+function taskFolder(task: Task): string {
+  return task.filePath!.replace(/\.md$/, '')
+}
+
 describe('ProjectStore self-write tracking', () => {
   it('marks the project file as self-written after save', async () => {
     const { store, vault } = newStore()
@@ -179,7 +184,6 @@ describe('ProjectStore round-trip', () => {
     const b = await addNamed(store, project, 'Build')
     await store.updateTask(project, a.id, {
       priority: 'high',
-      assignees: ['Alice'],
       tags: ['design']
     })
     await store.updateTask(project, b.id, { status: 'in-progress' })
@@ -202,7 +206,6 @@ describe('ProjectStore round-trip', () => {
     const reloadedA = expectDefined(flat.find((f) => f.task.id === a.id)).task
     expect(reloadedA.title).toBe('Design')
     expect(reloadedA.priority).toBe('high')
-    expect(reloadedA.assignees).toEqual(['Alice'])
     expect(reloadedA.tags).toEqual(['design'])
     expect(reloadedA.subtasks.map((s) => s.id)).toEqual([childOfA.id])
 
@@ -238,9 +241,9 @@ describe('ProjectStore round-trip', () => {
     // markAllDirty should have flagged every embedded task; saving once writes them all.
     await store.saveProject(project)
 
-    // Files exist on disk now.
-    expect(vault.getAbstractFileByPath('Projects/Legacy_tasks/first.md')).not.toBeNull()
-    expect(vault.getAbstractFileByPath('Projects/Legacy_tasks/second.md')).not.toBeNull()
+    // Files exist on disk now (with id suffix for uniqueness).
+    expect(vault.getAbstractFileByPath('Projects/Legacy_tasks/first-t1.md')).not.toBeNull()
+    expect(vault.getAbstractFileByPath('Projects/Legacy_tasks/second-t2.md')).not.toBeNull()
 
     // Reload and verify the embedded tasks survived as per-file tasks.
     const reloaded = await store.loadProject(file)
@@ -340,62 +343,70 @@ describe('ProjectStore task attachments', () => {
     const { store, vault } = newStore()
     const project = await store.createProject('Imgs', 'Projects')
     const task = await addNamed(store, project, 'Shot')
+    const folder = taskFolder(task)
 
     const file = await store.saveTaskAttachment(project, task, 'pic.png', new ArrayBuffer(4))
 
-    expect(file.path).toBe('Projects/Imgs_tasks/shot/attachments/pic.png')
-    expect(vault.getAbstractFileByPath('Projects/Imgs_tasks/shot/attachments/pic.png')).not.toBeNull()
+    expect(file.path).toBe(`${folder}/attachments/pic.png`)
+    expect(vault.getAbstractFileByPath(`${folder}/attachments/pic.png`)).not.toBeNull()
   })
 
   it('disambiguates a colliding attachment name', async () => {
     const { store } = newStore()
     const project = await store.createProject('Imgs', 'Projects')
     const task = await addNamed(store, project, 'Shot')
+    const folder = taskFolder(task)
 
     const first = await store.saveTaskAttachment(project, task, 'pic.png', new ArrayBuffer(4))
     const second = await store.saveTaskAttachment(project, task, 'pic.png', new ArrayBuffer(4))
 
-    expect(first.path).toBe('Projects/Imgs_tasks/shot/attachments/pic.png')
-    expect(second.path).toBe('Projects/Imgs_tasks/shot/attachments/pic 1.png')
+    expect(first.path).toBe(`${folder}/attachments/pic.png`)
+    expect(second.path).toBe(`${folder}/attachments/pic 1.png`)
   })
 
   it('trashes the attachments folder when the task is deleted', async () => {
     const { store, vault } = newStore()
     const project = await store.createProject('Imgs', 'Projects')
     const task = await addNamed(store, project, 'Shot')
+    const folder = taskFolder(task)
     await store.saveTaskAttachment(project, task, 'pic.png', new ArrayBuffer(4))
 
     await store.deleteTask(project, task.id)
 
-    expect(vault.getAbstractFileByPath('Projects/Imgs_tasks/shot/attachments/pic.png')).toBeNull()
-    expect(vault.getAbstractFileByPath('Projects/Imgs_tasks/shot')).toBeNull()
+    expect(vault.getAbstractFileByPath(`${folder}/attachments/pic.png`)).toBeNull()
+    expect(vault.getAbstractFileByPath(folder)).toBeNull()
   })
 
   it('moves the attachments folder when the task is renamed', async () => {
     const { store, vault } = newStore()
     const project = await store.createProject('Imgs', 'Projects')
     const task = await addNamed(store, project, 'Shot')
+    const oldFolder = taskFolder(task)
     await store.saveTaskAttachment(project, task, 'pic.png', new ArrayBuffer(4))
 
     await store.updateTask(project, task.id, { title: 'Photo' })
+    const newFolder = taskFolder(task)
 
-    expect(vault.getAbstractFileByPath('Projects/Imgs_tasks/shot/attachments/pic.png')).toBeNull()
-    expect(vault.getAbstractFileByPath('Projects/Imgs_tasks/photo/attachments/pic.png')).not.toBeNull()
+    expect(vault.getAbstractFileByPath(`${oldFolder}/attachments/pic.png`)).toBeNull()
+    expect(vault.getAbstractFileByPath(`${newFolder}/attachments/pic.png`)).not.toBeNull()
   })
 
   it('moves the attachments folder when the task is archived and back when unarchived', async () => {
     const { store, vault } = newStore()
     const project = await store.createProject('Imgs', 'Projects')
     const task = await addNamed(store, project, 'Shot')
+    const folder = taskFolder(task)
     await store.saveTaskAttachment(project, task, 'pic.png', new ArrayBuffer(4))
 
     await store.archiveTask(project, task.id)
-    expect(vault.getAbstractFileByPath('Projects/Imgs_tasks/shot/attachments/pic.png')).toBeNull()
-    expect(vault.getAbstractFileByPath('Projects/Imgs_tasks/Archive/shot/attachments/pic.png')).not.toBeNull()
+    const archivedFolder = taskFolder(task)
+    expect(vault.getAbstractFileByPath(`${folder}/attachments/pic.png`)).toBeNull()
+    expect(vault.getAbstractFileByPath(`${archivedFolder}/attachments/pic.png`)).not.toBeNull()
 
     await store.unarchiveTask(project, task.id)
-    expect(vault.getAbstractFileByPath('Projects/Imgs_tasks/Archive/shot/attachments/pic.png')).toBeNull()
-    expect(vault.getAbstractFileByPath('Projects/Imgs_tasks/shot/attachments/pic.png')).not.toBeNull()
+    const restoredFolder = taskFolder(task)
+    expect(vault.getAbstractFileByPath(`${archivedFolder}/attachments/pic.png`)).toBeNull()
+    expect(vault.getAbstractFileByPath(`${restoredFolder}/attachments/pic.png`)).not.toBeNull()
   })
 })
 
@@ -689,33 +700,14 @@ describe('ProjectStore concurrent-save race', () => {
     const second = store.updateTask(project, b.id, { title: 'B new' })
     await Promise.all([first, second])
 
-    expect(vault.getAbstractFileByPath('Projects/Race_tasks/a-new.md')).not.toBeNull()
-    expect(vault.getAbstractFileByPath('Projects/Race_tasks/b-new.md')).not.toBeNull()
+    expect(vault.getAbstractFileByPath(a.filePath!)).not.toBeNull()
+    expect(vault.getAbstractFileByPath(b.filePath!)).not.toBeNull()
     expect(vault.getAbstractFileByPath(aOldPath)).toBeNull()
     expect(vault.getAbstractFileByPath(bOldPath)).toBeNull()
   })
 })
 
 describe('ProjectStore bulk mutators', () => {
-  it('updateTasks with a function patch writes only the patched task files', async () => {
-    const { store, vault } = newStore()
-    const project = await store.createProject('Bulk', 'Projects')
-    const a = await addNamed(store, project, 'alpha')
-    const b = await addNamed(store, project, 'beta')
-    await store.updateTask(project, b.id, { assignees: ['sam'] })
-    vault.resetCounts()
-
-    await store.updateTasks(project, [a.id, b.id], (t) =>
-      t.assignees.includes('sam') ? null : { assignees: [...t.assignees, 'sam'] }
-    )
-
-    expect(a.assignees).toEqual(['sam'])
-    expect(vault.modifyCount.get(expectDefined(a.filePath))).toBe(1)
-    expect(vault.modifyCount.get(expectDefined(b.filePath))).toBeUndefined()
-    const file = vault.getAbstractFileByPath(expectDefined(a.filePath))
-    if (!(file instanceof TFile)) throw new Error('task file missing')
-    expect(await vault.cachedRead(file)).toContain('sam')
-  })
 
   it('reorderTask persists sibling order through the parent file only', async () => {
     const { store, vault } = newStore()

@@ -35,9 +35,8 @@ describe('task round-trip', () => {
       priority: 'high',
       start: '2026-04-01',
       due: '2026-04-10',
-      progress: 50,
-      assignees: ['Alice', 'Bob'],
-      tags: ['api', 'design'],
+    progress: 50,
+    tags: ['api', 'design'],
       dependencies: ['dep-1']
     })
     const { task, subtaskIds, parentId } = roundTripTask(original)
@@ -50,7 +49,6 @@ describe('task round-trip', () => {
     expect(task.start).toBe(original.start)
     expect(task.due).toBe(original.due)
     expect(task.progress).toBe(original.progress)
-    expect(task.assignees).toEqual(original.assignees)
     expect(task.tags).toEqual(original.tags)
     expect(task.dependencies).toEqual(original.dependencies)
     expect(subtaskIds).toEqual([])
@@ -128,7 +126,6 @@ describe('task round-trip', () => {
     expect(task.status).toBe('todo')
     expect(task.priority).toBe('medium')
     expect(task.progress).toBe(0)
-    expect(task.assignees).toEqual([])
     expect(task.dependencies).toEqual([])
     expect(task.customFields).toEqual({})
   })
@@ -140,14 +137,12 @@ describe('project round-trip', () => {
     p.description = 'A great project.'
     p.color = '#ff0000'
     p.icon = '\u{1F680}'
-    p.teamMembers = ['Alice', 'Bob']
 
     const { project } = roundTripProject(p)
     expect(project.title).toBe('My Project')
     expect(project.description).toBe('A great project.')
     expect(project.color).toBe('#ff0000')
     expect(project.icon).toBe('\u{1F680}')
-    expect(project.teamMembers).toEqual(['Alice', 'Bob'])
   })
 
   it('preserves saved views with filter, sortKey, and sortDir', () => {
@@ -159,7 +154,6 @@ describe('project round-trip', () => {
         text: 'api',
         statuses: ['in-progress'],
         priorities: ['high', 'critical'],
-        assignees: ['Alice'],
         tags: ['design'],
         dueDateFilter: 'overdue',
         showArchived: false
@@ -212,7 +206,6 @@ describe('hydration does not alias the source frontmatter', () => {
     const fm: Record<string, unknown> = {
       id: 't1',
       title: 'Task',
-      assignees: ['Alice'],
       tags: ['api'],
       dependencies: ['dep-1'],
       customFields: { sprint: 'S1' },
@@ -225,7 +218,6 @@ describe('hydration does not alias the source frontmatter', () => {
     if (!logs) throw new Error('timeLogs missing')
     const srcLogs = fm.timeLogs as { hours: number }[]
 
-    expect(task.assignees).not.toBe(fm.assignees)
     expect(task.tags).not.toBe(fm.tags)
     expect(task.dependencies).not.toBe(fm.dependencies)
     expect(task.customFields).not.toBe(fm.customFields)
@@ -233,36 +225,28 @@ describe('hydration does not alias the source frontmatter', () => {
     expect(logs).not.toBe(fm.timeLogs)
     expect(logs[0]).not.toBe(srcLogs[0])
 
-    task.assignees.push('Bob')
     task.tags.push('design')
     task.dependencies.push('dep-2')
     task.customFields.priority = 'high'
     logs[0].hours = 99
 
-    expect(fm.assignees).toEqual(['Alice'])
     expect(fm.tags).toEqual(['api'])
     expect(fm.dependencies).toEqual(['dep-1'])
     expect(fm.customFields).toEqual({ sprint: 'S1' })
     expect(srcLogs[0].hours).toBe(2)
   })
 
-  it('copies project array containers', () => {
+  it('ignores taskTemplates from frontmatter (stored as separate files)', () => {
     const fm: Record<string, unknown> = {
       id: 'p1',
       title: 'Project',
       customFields: [{ id: 'cf1', name: 'Sprint', type: 'text' }],
-      teamMembers: ['Alice']
+      taskTemplates: [{ id: 'tpl1', name: 'Bug fix', subtasks: [{ title: 'Reproduce' }] }]
     }
 
     const project = hydrateProjectFromFrontmatter(fm, '', 'Projects/P.md', 'P')
 
     expect(project.customFields).not.toBe(fm.customFields)
-    expect(project.teamMembers).not.toBe(fm.teamMembers)
-
-    project.customFields.push({ id: 'cf2', name: 'Points', type: 'number' })
-    project.teamMembers.push('Bob')
-
-    expect((fm.customFields as unknown[]).length).toBe(1)
-    expect(fm.teamMembers).toEqual(['Alice'])
+    expect(project.taskTemplates).toEqual([])
   })
 })

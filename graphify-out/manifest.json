@@ -1,0 +1,562 @@
+{
+  "/home/stanislasius/Projects/Personal/obsidian-pm/.oxfmtrc.json": {
+    "mtime": 1782765070.4318686,
+    "ast_hash": "3e06960da2a9b7d871af9edb1bbba371",
+    "semantic_hash": "3e06960da2a9b7d871af9edb1bbba371"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/eslint.config.mjs": {
+    "mtime": 1782765070.4358687,
+    "ast_hash": "67eae90cc52eb6a72b710ab8f09fca40",
+    "semantic_hash": "67eae90cc52eb6a72b710ab8f09fca40"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/main_30-06-2026_00-55_665ba.js": {
+    "mtime": 1782770131.7424562,
+    "ast_hash": "309e61df4173c5789cc49cdf9f1ac2d3",
+    "semantic_hash": "309e61df4173c5789cc49cdf9f1ac2d3"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/manifest.json": {
+    "mtime": 1782765070.4358687,
+    "ast_hash": "cafd9a92eb077be6fe9f2b7eb5d46c2f",
+    "semantic_hash": "cafd9a92eb077be6fe9f2b7eb5d46c2f"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/oxlint.config.ts": {
+    "mtime": 1782765070.4358687,
+    "ast_hash": "d40f74bdd7b1d56bb31ce510be1167c4",
+    "semantic_hash": "d40f74bdd7b1d56bb31ce510be1167c4"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/package.json": {
+    "mtime": 1782765070.4358687,
+    "ast_hash": "8c9c9b9ac69930e042b9748acd7ded57",
+    "semantic_hash": "8c9c9b9ac69930e042b9748acd7ded57"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/scripts/build-styles.mjs": {
+    "mtime": 1782765070.4398687,
+    "ast_hash": "5e61c1fd1fcafedc464265448fcd3e4c",
+    "semantic_hash": "5e61c1fd1fcafedc464265448fcd3e4c"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/components/Notifier.ts": {
+    "mtime": 1782765070.4398687,
+    "ast_hash": "b665d2031f972a43fb50cddbaeb4257d",
+    "semantic_hash": "b665d2031f972a43fb50cddbaeb4257d"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/dates.ts": {
+    "mtime": 1782765070.4398687,
+    "ast_hash": "ae3c61aa8ae42d2b1803fba5c490286c",
+    "semantic_hash": "ae3c61aa8ae42d2b1803fba5c490286c"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/main.ts": {
+    "mtime": 1782767825.104002,
+    "ast_hash": "33799e720b36ea542743a5ea4e816bb4",
+    "semantic_hash": "33799e720b36ea542743a5ea4e816bb4"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/migration.ts": {
+    "mtime": 1782765070.4398687,
+    "ast_hash": "dc866d1a3c375adb124cca2ded3968c2",
+    "semantic_hash": "dc866d1a3c375adb124cca2ded3968c2"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/CustomFieldInputs.ts": {
+    "mtime": 1782765070.4398687,
+    "ast_hash": "7f3a4a83099637dddfeeb60bbd387a9c",
+    "semantic_hash": "7f3a4a83099637dddfeeb60bbd387a9c"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/ImportModal.ts": {
+    "mtime": 1782765070.4398687,
+    "ast_hash": "961bf8c675902f98c03a3c11ea3420b6",
+    "semantic_hash": "961bf8c675902f98c03a3c11ea3420b6"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/NoteLinkSuggest.ts": {
+    "mtime": 1782765070.4398687,
+    "ast_hash": "a8f4d8c262b5e8d3e1e454b958780425",
+    "semantic_hash": "a8f4d8c262b5e8d3e1e454b958780425"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/PickerModals.ts": {
+    "mtime": 1782765070.4398687,
+    "ast_hash": "fbd8b11755e19eff0da552bf346a2403",
+    "semantic_hash": "fbd8b11755e19eff0da552bf346a2403"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/ProjectModal.ts": {
+    "mtime": 1782765070.4398687,
+    "ast_hash": "f79ba0d00e1caf69f4e9de6d7aa0806f",
+    "semantic_hash": "f79ba0d00e1caf69f4e9de6d7aa0806f"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/SubtasksPanel.ts": {
+    "mtime": 1782767837.4440188,
+    "ast_hash": "387f0a8dfefc77b9d30ac90233f4f669",
+    "semantic_hash": "387f0a8dfefc77b9d30ac90233f4f669"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/TaskFormFields.ts": {
+    "mtime": 1782768982.179986,
+    "ast_hash": "6a310ee52af2bbf8c0c19faff36760a6",
+    "semantic_hash": "6a310ee52af2bbf8c0c19faff36760a6"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/TaskModal.ts": {
+    "mtime": 1782765070.4438686,
+    "ast_hash": "1f3fe59f3831b1a5dea2e8a5dde6d593",
+    "semantic_hash": "1f3fe59f3831b1a5dea2e8a5dde6d593"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/TimeTrackingPanel.ts": {
+    "mtime": 1782765070.4438686,
+    "ast_hash": "3958897788b342e370ad51d1d82d663b",
+    "semantic_hash": "3958897788b342e370ad51d1d82d663b"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/settings.ts": {
+    "mtime": 1782767721.0518587,
+    "ast_hash": "f64e94143d92ae3e9e20ab277dfdf55e",
+    "semantic_hash": "f64e94143d92ae3e9e20ab277dfdf55e"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/ArchiveOps.ts": {
+    "mtime": 1782765070.4438686,
+    "ast_hash": "0d3bc4a4f45e355d501861492b8d558b",
+    "semantic_hash": "0d3bc4a4f45e355d501861492b8d558b"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/ProjectStore.test.ts": {
+    "mtime": 1782767878.4280753,
+    "ast_hash": "2d4f1f9ed97a4b9b4986f93e059187bb",
+    "semantic_hash": "2d4f1f9ed97a4b9b4986f93e059187bb"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/ProjectStore.ts": {
+    "mtime": 1782769003.556145,
+    "ast_hash": "701332ac2ff56ee845ac7673d5c9396b",
+    "semantic_hash": "701332ac2ff56ee845ac7673d5c9396b"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/Scheduler.test.ts": {
+    "mtime": 1782765070.4438686,
+    "ast_hash": "6693f6f3a3a622c7659465b76ab03c92",
+    "semantic_hash": "6693f6f3a3a622c7659465b76ab03c92"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/Scheduler.ts": {
+    "mtime": 1782765070.4438686,
+    "ast_hash": "05fe4f42420d1d789131fbaadc94ab74",
+    "semantic_hash": "05fe4f42420d1d789131fbaadc94ab74"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/TaskFilter.test.ts": {
+    "mtime": 1782765070.4438686,
+    "ast_hash": "09ca632e6378d6dfc75226b70b6882a2",
+    "semantic_hash": "09ca632e6378d6dfc75226b70b6882a2"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/TaskFilter.ts": {
+    "mtime": 1782765070.4438686,
+    "ast_hash": "71f8099e1990ad1eaedfde021173d047",
+    "semantic_hash": "71f8099e1990ad1eaedfde021173d047"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/TaskIndex.test.ts": {
+    "mtime": 1782765070.4478686,
+    "ast_hash": "499d8c6c337727c75ee1d5cbcea33636",
+    "semantic_hash": "499d8c6c337727c75ee1d5cbcea33636"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/TaskIndex.ts": {
+    "mtime": 1782765070.4478686,
+    "ast_hash": "3e2f5c36b1b8fb692bd06cb54a803d42",
+    "semantic_hash": "3e2f5c36b1b8fb692bd06cb54a803d42"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/TaskTreeOps.test.ts": {
+    "mtime": 1782765070.4478686,
+    "ast_hash": "f3b67e2b95278d753320de5705cbd82f",
+    "semantic_hash": "f3b67e2b95278d753320de5705cbd82f"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/TaskTreeOps.ts": {
+    "mtime": 1782767731.8918736,
+    "ast_hash": "fd809f6844f5b7a40d904a17b324128e",
+    "semantic_hash": "fd809f6844f5b7a40d904a17b324128e"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/YamlHydrator.ts": {
+    "mtime": 1782765070.4478686,
+    "ast_hash": "e0ec0468bc44f39f4ef7b3bad3db61be",
+    "semantic_hash": "e0ec0468bc44f39f4ef7b3bad3db61be"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/YamlParser.test.ts": {
+    "mtime": 1782765070.4478686,
+    "ast_hash": "ebe368e28b6ed722a2a87ef1928e0eb6",
+    "semantic_hash": "ebe368e28b6ed722a2a87ef1928e0eb6"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/YamlParser.ts": {
+    "mtime": 1782765070.4478686,
+    "ast_hash": "3fd6f546b48c09401de0b3ad84b4c928",
+    "semantic_hash": "3fd6f546b48c09401de0b3ad84b4c928"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/YamlSerializer.ts": {
+    "mtime": 1782765070.4478686,
+    "ast_hash": "54f38e01f3d7bccaff9e70c46af68f2c",
+    "semantic_hash": "54f38e01f3d7bccaff9e70c46af68f2c"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/index.ts": {
+    "mtime": 1782765070.4478686,
+    "ast_hash": "a38783ae4c0c9e88e8837d9c8379736f",
+    "semantic_hash": "a38783ae4c0c9e88e8837d9c8379736f"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/vaultFs.ts": {
+    "mtime": 1782765070.4478686,
+    "ast_hash": "11a8a1f4b086d0ecbdb36b76d035049c",
+    "semantic_hash": "11a8a1f4b086d0ecbdb36b76d035049c"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/yaml-round-trip.test.ts": {
+    "mtime": 1782765070.4478686,
+    "ast_hash": "b07b1fa6516a36064c49a8435d518a71",
+    "semantic_hash": "b07b1fa6516a36064c49a8435d518a71"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/types.ts": {
+    "mtime": 1782767713.1158478,
+    "ast_hash": "0c9d982da97abbfca1b7644856cd8f2c",
+    "semantic_hash": "0c9d982da97abbfca1b7644856cd8f2c"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/FilterDropdown.ts": {
+    "mtime": 1782765070.4518688,
+    "ast_hash": "c3c591394006c4d290ee98b0a7adcf4e",
+    "semantic_hash": "c3c591394006c4d290ee98b0a7adcf4e"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/FormField.ts": {
+    "mtime": 1782765070.4518688,
+    "ast_hash": "8d87cc4d194cab56ef7e1bee2c893fa5",
+    "semantic_hash": "8d87cc4d194cab56ef7e1bee2c893fa5"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/ModalFactory.ts": {
+    "mtime": 1782765070.4518688,
+    "ast_hash": "ef0e0d909b9ec5b11bc025ea60030cf2",
+    "semantic_hash": "ef0e0d909b9ec5b11bc025ea60030cf2"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/StatusBadge.ts": {
+    "mtime": 1782765070.4518688,
+    "ast_hash": "57383de5252a61a9d59f27f8575139ec",
+    "semantic_hash": "57383de5252a61a9d59f27f8575139ec"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/TaskContextMenu.ts": {
+    "mtime": 1782765070.4518688,
+    "ast_hash": "e0fff5a263ac61c31673ec8e289dd088",
+    "semantic_hash": "e0fff5a263ac61c31673ec8e289dd088"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/KanbanCard.ts": {
+    "mtime": 1782765070.4518688,
+    "ast_hash": "34fc76ae4ff55d7881516f6336ede31b",
+    "semantic_hash": "34fc76ae4ff55d7881516f6336ede31b"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/KanbanColumn.ts": {
+    "mtime": 1782765070.4518688,
+    "ast_hash": "ae4c1d8e2170db4897afffbd45c32acd",
+    "semantic_hash": "ae4c1d8e2170db4897afffbd45c32acd"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/ProjectCard.ts": {
+    "mtime": 1782765070.4518688,
+    "ast_hash": "ab2908289e75a5c1268ef75361b46bbf",
+    "semantic_hash": "ab2908289e75a5c1268ef75361b46bbf"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/ProjectHeader/FilterRow.ts": {
+    "mtime": 1782765070.4518688,
+    "ast_hash": "f3e0e5a2b1ebb1c58b4da16701e5b418",
+    "semantic_hash": "f3e0e5a2b1ebb1c58b4da16701e5b418"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/ProjectHeader/PrimaryRow.ts": {
+    "mtime": 1782765070.4518688,
+    "ast_hash": "91bfc346314c020cd20ee8ac1a788cfd",
+    "semantic_hash": "91bfc346314c020cd20ee8ac1a788cfd"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/ProjectHeader/ProjectHeader.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "63ccce477f2325fcc32fe0914749d4d9",
+    "semantic_hash": "63ccce477f2325fcc32fe0914749d4d9"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/ProjectHeader/index.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "b40cb77bb66c9ee2834269cd034009b7",
+    "semantic_hash": "b40cb77bb66c9ee2834269cd034009b7"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/TaskRow.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "48a71f97a4035b71c740dbc6917b4faf",
+    "semantic_hash": "48a71f97a4035b71c740dbc6917b4faf"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/ActionsCell.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "c1ec17193421ae526d67c67ef4eb49fb",
+    "semantic_hash": "c1ec17193421ae526d67c67ef4eb49fb"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/AssigneesCell.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "415d6f004db77bd9735ae45e5120ae56",
+    "semantic_hash": "415d6f004db77bd9735ae45e5120ae56"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/CustomFieldCell.ts": {
+    "mtime": 1782769549.4515429,
+    "ast_hash": "47ac790137a0c7e9573457545ab67ecf",
+    "semantic_hash": "47ac790137a0c7e9573457545ab67ecf"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/DueDateCell.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "095f09fe7ca65ee5e3b26f579fe23e97",
+    "semantic_hash": "095f09fe7ca65ee5e3b26f579fe23e97"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/ExpandCell.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "1908927cd223c1c8876a2b41d54095a7",
+    "semantic_hash": "1908927cd223c1c8876a2b41d54095a7"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/PriorityCell.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "572532d5114be428b609e08803f794b7",
+    "semantic_hash": "572532d5114be428b609e08803f794b7"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/ProgressCell.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "e186709e503336d9d189c4fa2f96e3ab",
+    "semantic_hash": "e186709e503336d9d189c4fa2f96e3ab"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/SelectCell.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "ab31e4d8ebea9683372c15b52c2dedfe",
+    "semantic_hash": "ab31e4d8ebea9683372c15b52c2dedfe"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/StatusCell.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "ceaa176de98dec66653099946d8cf5a2",
+    "semantic_hash": "ceaa176de98dec66653099946d8cf5a2"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/TimeCell.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "915ed8d37b99d221a7b8ef87528f44fb",
+    "semantic_hash": "915ed8d37b99d221a7b8ef87528f44fb"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/TitleCell.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "bd0aac1498614c7a53c6b6af9a6468a6",
+    "semantic_hash": "bd0aac1498614c7a53c6b6af9a6468a6"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/inlineEdit.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "c61b91faf93bb766950be16a30e62400",
+    "semantic_hash": "c61b91faf93bb766950be16a30e62400"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/Avatar.test.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "7cb5e00031c01302224bd333eb7ef406",
+    "semantic_hash": "7cb5e00031c01302224bd333eb7ef406"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/Avatar.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "e8058d87daa65e51cf38d7b50281d399",
+    "semantic_hash": "e8058d87daa65e51cf38d7b50281d399"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/AvatarStack.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "e8cd80788f92456b11fbf387b609481e",
+    "semantic_hash": "e8cd80788f92456b11fbf387b609481e"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/Chip.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "2a0fd734f505b0888336067277b3229f",
+    "semantic_hash": "2a0fd734f505b0888336067277b3229f"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/CollapseToggle.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "99b3a6728f6ddcadb8873aa6e705d0cf",
+    "semantic_hash": "99b3a6728f6ddcadb8873aa6e705d0cf"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/EmptyState.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "3918646d4c25899eb72f2db51357fc35",
+    "semantic_hash": "3918646d4c25899eb72f2db51357fc35"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/IconButton.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "cd1f7e862719f87888017fe0a3a98a2e",
+    "semantic_hash": "cd1f7e862719f87888017fe0a3a98a2e"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/Pill.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "f7e5efdb2c2bbfc7c463b146891d9ae4",
+    "semantic_hash": "f7e5efdb2c2bbfc7c463b146891d9ae4"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/ProgressBar.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "dcdd08ddf3f7576ed3502dd4d7eca256",
+    "semantic_hash": "dcdd08ddf3f7576ed3502dd4d7eca256"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/SegmentedControl.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "3aef6a64cc3f02629ddaa5dc160de964",
+    "semantic_hash": "3aef6a64cc3f02629ddaa5dc160de964"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/TimeChip.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "04f0d595557a8b1acc7bd4131d461443",
+    "semantic_hash": "04f0d595557a8b1acc7bd4131d461443"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/ViewSwitcher.ts": {
+    "mtime": 1782765070.4558687,
+    "ast_hash": "5fc9c9ec090747605ca43fc2ea5054a6",
+    "semantic_hash": "5fc9c9ec090747605ca43fc2ea5054a6"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/utils.ts": {
+    "mtime": 1782766298.465899,
+    "ast_hash": "e8d494a075ad9b63d0aa980c49ac7d40",
+    "semantic_hash": "e8d494a075ad9b63d0aa980c49ac7d40"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/DashboardView.ts": {
+    "mtime": 1782765070.4598687,
+    "ast_hash": "b635dcf5a068f67fdc7da32422bc1f5e",
+    "semantic_hash": "b635dcf5a068f67fdc7da32422bc1f5e"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/KanbanView.ts": {
+    "mtime": 1782765070.4598687,
+    "ast_hash": "4486045fea66a1d399eb2da8f6c933ed",
+    "semantic_hash": "4486045fea66a1d399eb2da8f6c933ed"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/PMViewRouter.ts": {
+    "mtime": 1782765070.4598687,
+    "ast_hash": "3fd3e0841c9412ef9fbbf88952c9d1d7",
+    "semantic_hash": "3fd3e0841c9412ef9fbbf88952c9d1d7"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/ProjectListRenderer.ts": {
+    "mtime": 1782765070.4598687,
+    "ast_hash": "4e74dd292ca0a1358a7f56c08a4ea799",
+    "semantic_hash": "4e74dd292ca0a1358a7f56c08a4ea799"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/ProjectView.ts": {
+    "mtime": 1782765070.4598687,
+    "ast_hash": "e2a6e05c76d89ff416051edc7580d53b",
+    "semantic_hash": "e2a6e05c76d89ff416051edc7580d53b"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/SubView.ts": {
+    "mtime": 1782765070.4598687,
+    "ast_hash": "20d1b1f8c5dda191543773c19301bee6",
+    "semantic_hash": "20d1b1f8c5dda191543773c19301bee6"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/GanttDragHandler.ts": {
+    "mtime": 1782765070.4598687,
+    "ast_hash": "485593b78c646e6e9777fed10eec9cbf",
+    "semantic_hash": "485593b78c646e6e9777fed10eec9cbf"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/GanttHeaderRenderer.ts": {
+    "mtime": 1782765070.4598687,
+    "ast_hash": "89e2ef1eb8dcf326843fe37b23516293",
+    "semantic_hash": "89e2ef1eb8dcf326843fe37b23516293"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/GanttLinkHandler.ts": {
+    "mtime": 1782765070.4598687,
+    "ast_hash": "94d0a377ebe62d02eb1a6f8127bbf6b7",
+    "semantic_hash": "94d0a377ebe62d02eb1a6f8127bbf6b7"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/GanttRenderer.ts": {
+    "mtime": 1782765070.4598687,
+    "ast_hash": "82f02bde2795ddfaba1198cd4391c1f5",
+    "semantic_hash": "82f02bde2795ddfaba1198cd4391c1f5"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/GanttTaskBarRenderer.ts": {
+    "mtime": 1782765070.4598687,
+    "ast_hash": "e28c34b2430e9f57ed5b37d508d837ef",
+    "semantic_hash": "e28c34b2430e9f57ed5b37d508d837ef"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/GanttView.ts": {
+    "mtime": 1782765070.4598687,
+    "ast_hash": "1c1bfec0ee0fdc5c3f7500d9a3cdb217",
+    "semantic_hash": "1c1bfec0ee0fdc5c3f7500d9a3cdb217"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/TaskLabelRenderer.ts": {
+    "mtime": 1782765070.4598687,
+    "ast_hash": "7815e1e113f1a342a8be173cc8cad54c",
+    "semantic_hash": "7815e1e113f1a342a8be173cc8cad54c"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/TimelineConfig.ts": {
+    "mtime": 1782765070.4638686,
+    "ast_hash": "3f5a16d1992e42adbfb1369dd2ef6132",
+    "semantic_hash": "3f5a16d1992e42adbfb1369dd2ef6132"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/table/BulkActionBar.ts": {
+    "mtime": 1782765070.4638686,
+    "ast_hash": "2d05eee0bc303cc0750fede647649364",
+    "semantic_hash": "2d05eee0bc303cc0750fede647649364"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/table/TableFilters.ts": {
+    "mtime": 1782766302.033904,
+    "ast_hash": "120969b88fbfec4b42a662e36c36af36",
+    "semantic_hash": "120969b88fbfec4b42a662e36c36af36"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/table/TableRenderer.ts": {
+    "mtime": 1782766248.3978295,
+    "ast_hash": "21c9ab4ce46c74d1b6aaa4e07ccc7773",
+    "semantic_hash": "21c9ab4ce46c74d1b6aaa4e07ccc7773"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/table/TableRow.ts": {
+    "mtime": 1782769553.9435673,
+    "ast_hash": "c0e580d5d2c8487a5443a45de60a66ff",
+    "semantic_hash": "c0e580d5d2c8487a5443a45de60a66ff"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/table/TableView.ts": {
+    "mtime": 1782769024.0162947,
+    "ast_hash": "aa7536032100bdddaacdb193a9bee735",
+    "semantic_hash": "aa7536032100bdddaacdb193a9bee735"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/test/fakeVault.ts": {
+    "mtime": 1782765070.4638686,
+    "ast_hash": "4fcdc19641f1bca3dc5bdc6078fe84fa",
+    "semantic_hash": "4fcdc19641f1bca3dc5bdc6078fe84fa"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/test/obsidian-stub.ts": {
+    "mtime": 1782765070.4638686,
+    "ast_hash": "1f09692e5daa4723087752bf370b55da",
+    "semantic_hash": "1f09692e5daa4723087752bf370b55da"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/tsconfig.json": {
+    "mtime": 1782765070.4638686,
+    "ast_hash": "4abd603fd40efe74ee453d2e3f14e57f",
+    "semantic_hash": "4abd603fd40efe74ee453d2e3f14e57f"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/tsdown.config.ts": {
+    "mtime": 1782765070.4638686,
+    "ast_hash": "d90d49834d6329b9f701194ad76f8490",
+    "semantic_hash": "d90d49834d6329b9f701194ad76f8490"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/versions.json": {
+    "mtime": 1782765070.4638686,
+    "ast_hash": "51fb384b9bdb7221d721f3a51ef48bd5",
+    "semantic_hash": "51fb384b9bdb7221d721f3a51ef48bd5"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/vitest.config.ts": {
+    "mtime": 1782765070.4638686,
+    "ast_hash": "5407c9ce168229569fb86aca31ef71de",
+    "semantic_hash": "5407c9ce168229569fb86aca31ef71de"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/.github/PULL_REQUEST_TEMPLATE.md": {
+    "mtime": 1782765070.4318686,
+    "ast_hash": "dbd5aa13f30b9453fb63c378e983b535",
+    "semantic_hash": "dbd5aa13f30b9453fb63c378e983b535"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/.github/workflows/build.yml": {
+    "mtime": 1782765070.4318686,
+    "ast_hash": "50fc5f1bbc043b794d9841e2c4036869",
+    "semantic_hash": "50fc5f1bbc043b794d9841e2c4036869"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/.github/workflows/bump.yml": {
+    "mtime": 1782765070.4318686,
+    "ast_hash": "bebc9d7d6d95fc70a34eca1accb6434d",
+    "semantic_hash": "bebc9d7d6d95fc70a34eca1accb6434d"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/.github/workflows/codeql.yml": {
+    "mtime": 1782765070.4318686,
+    "ast_hash": "e9ba811dff4474ef7b837e856daccae0",
+    "semantic_hash": "e9ba811dff4474ef7b837e856daccae0"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/.github/workflows/release.yml": {
+    "mtime": 1782765070.4318686,
+    "ast_hash": "83e24786c3ba5f7fc42411feac095ee1",
+    "semantic_hash": "83e24786c3ba5f7fc42411feac095ee1"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/.github/workflows/test.yml": {
+    "mtime": 1782765070.4318686,
+    "ast_hash": "145c7faf543047a2cfc548b71e2cd6ea",
+    "semantic_hash": "145c7faf543047a2cfc548b71e2cd6ea"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/CHANGELOG.md": {
+    "mtime": 1782765070.4358687,
+    "ast_hash": "239d816529a3d792a7be0d007072b3c0",
+    "semantic_hash": "239d816529a3d792a7be0d007072b3c0"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/README.md": {
+    "mtime": 1782765070.4358687,
+    "ast_hash": "14015fffa5c8b92afa85c6db86fdd2ec",
+    "semantic_hash": "14015fffa5c8b92afa85c6db86fdd2ec"
+  },
+  "/home/stanislasius/Projects/Personal/obsidian-pm/pnpm-workspace.yaml": {
+    "mtime": 1782765070.4398687,
+    "ast_hash": "e1a189ad8a44dd5beaa4fb42897580e4",
+    "semantic_hash": "e1a189ad8a44dd5beaa4fb42897580e4"
+  }
+}

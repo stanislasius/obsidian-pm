@@ -198,10 +198,6 @@
   width: 40px;
   text-align: center;
 }
-.pm-table-cell-assignees {
-  min-width: 80px;
-}
-
 .pm-task-title-text {
   cursor: pointer;
   font-weight: 500;
@@ -216,38 +212,6 @@
   gap: 4px;
   flex-wrap: wrap;
   margin-top: 2px;
-}
-
-/* -- Avatar ------------------------------------------------------------- */
-.pm-avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--text-on-accent);
-  border: 2px solid var(--background-primary);
-  flex-shrink: 0;
-}
-.pm-avatar--sm {
-  width: 22px;
-  height: 22px;
-  font-size: 9px;
-}
-.pm-avatar--more {
-  background: var(--background-modifier-border);
-  color: var(--text-muted);
-  font-size: 10px;
-}
-.pm-avatar-stack {
-  display: inline-flex;
-  align-items: center;
-}
-.pm-avatar-stack > .pm-avatar:not(:first-child) {
-  margin-left: -6px;
 }
 
 /* -- ProgressBar -------------------------------------------------------- */

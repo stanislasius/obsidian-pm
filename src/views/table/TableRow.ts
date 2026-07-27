@@ -9,7 +9,6 @@ import { openTaskModal } from '../../ui/ModalFactory'
 import { buildTaskContextMenu } from '../../ui/TaskContextMenu'
 import { TaskRow } from '../../ui/composites/TaskRow'
 import { ActionsCell } from '../../ui/composites/cells/ActionsCell'
-import { AssigneesCell } from '../../ui/composites/cells/AssigneesCell'
 import { CustomFieldCell } from '../../ui/composites/cells/CustomFieldCell'
 import { DueDateCell } from '../../ui/composites/cells/DueDateCell'
 import { ExpandCell } from '../../ui/composites/cells/ExpandCell'
@@ -116,8 +115,6 @@ export function renderTaskRow(tbody: HTMLElement, task: Task, depth: number, ctx
       await ctx.onRefresh()
     })
   })
-
-  new AssigneesCell(row, task.assignees)
 
   const due = parsePlainDate(task.due)
   const overdue = isTaskOverdue(task, ctx.plugin.settings.statuses)

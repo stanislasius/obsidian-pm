@@ -1,0 +1,449 @@
+{
+  "files": {
+    "/home/stanislasius/Projects/Personal/obsidian-pm/.oxfmtrc.json": {
+      "ext": ".json",
+      "mtime": 1782765070.4318686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/eslint.config.mjs": {
+      "ext": ".mjs",
+      "mtime": 1782765070.4358687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/manifest.json": {
+      "ext": ".json",
+      "mtime": 1782765070.4358687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/oxlint.config.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4358687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/package.json": {
+      "ext": ".json",
+      "mtime": 1782765070.4358687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/scripts/build-styles.mjs": {
+      "ext": ".mjs",
+      "mtime": 1782765070.4398687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/components/Notifier.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4398687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/dates.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4398687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/main.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4398687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/migration.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4398687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/CustomFieldInputs.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4398687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/ImportModal.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4398687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/NoteLinkSuggest.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4398687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/PickerModals.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4398687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/ProjectModal.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4398687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/SubtasksPanel.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4438686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/TaskFormFields.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4438686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/TaskModal.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4438686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/modals/TimeTrackingPanel.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4438686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/settings.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4438686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/ArchiveOps.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4438686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/ProjectStore.test.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4438686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/ProjectStore.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4438686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/Scheduler.test.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4438686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/Scheduler.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4438686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/TaskFilter.test.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4438686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/TaskFilter.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4438686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/TaskIndex.test.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4478686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/TaskIndex.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4478686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/TaskTreeOps.test.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4478686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/TaskTreeOps.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4478686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/YamlHydrator.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4478686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/YamlParser.test.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4478686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/YamlParser.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4478686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/YamlSerializer.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4478686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/index.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4478686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/vaultFs.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4478686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/store/yaml-round-trip.test.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4478686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/types.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4518688
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/FilterDropdown.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4518688
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/FormField.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4518688
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/ModalFactory.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4518688
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/StatusBadge.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4518688
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/TaskContextMenu.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4518688
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/KanbanCard.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4518688
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/KanbanColumn.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4518688
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/ProjectCard.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4518688
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/ProjectHeader/FilterRow.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4518688
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/ProjectHeader/PrimaryRow.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4518688
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/ProjectHeader/ProjectHeader.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/ProjectHeader/index.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/TaskRow.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/ActionsCell.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/AssigneesCell.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/CustomFieldCell.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/DueDateCell.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/ExpandCell.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/PriorityCell.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/ProgressCell.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/SelectCell.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/StatusCell.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/TimeCell.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/TitleCell.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/composites/cells/inlineEdit.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/Avatar.test.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/Avatar.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/AvatarStack.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/Chip.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/CollapseToggle.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/EmptyState.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/IconButton.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/Pill.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/ProgressBar.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/SegmentedControl.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/TimeChip.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/ui/primitives/ViewSwitcher.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4558687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/utils.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4598687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/DashboardView.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4598687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/KanbanView.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4598687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/PMViewRouter.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4598687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/ProjectListRenderer.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4598687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/ProjectView.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4598687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/SubView.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4598687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/GanttDragHandler.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4598687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/GanttHeaderRenderer.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4598687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/GanttLinkHandler.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4598687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/GanttRenderer.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4598687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/GanttTaskBarRenderer.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4598687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/GanttView.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4598687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/TaskLabelRenderer.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4598687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/gantt/TimelineConfig.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4638686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/table/BulkActionBar.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4638686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/table/TableFilters.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4638686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/table/TableRenderer.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4638686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/table/TableRow.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4638686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/src/views/table/TableView.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4638686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/test/fakeVault.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4638686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/test/obsidian-stub.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4638686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/tsconfig.json": {
+      "ext": ".json",
+      "mtime": 1782765070.4638686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/tsdown.config.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4638686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/versions.json": {
+      "ext": ".json",
+      "mtime": 1782765070.4638686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/vitest.config.ts": {
+      "ext": ".ts",
+      "mtime": 1782765070.4638686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/.github/PULL_REQUEST_TEMPLATE.md": {
+      "ext": ".md",
+      "mtime": 1782765070.4318686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/.github/workflows/build.yml": {
+      "ext": ".yml",
+      "mtime": 1782765070.4318686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/.github/workflows/bump.yml": {
+      "ext": ".yml",
+      "mtime": 1782765070.4318686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/.github/workflows/codeql.yml": {
+      "ext": ".yml",
+      "mtime": 1782765070.4318686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/.github/workflows/release.yml": {
+      "ext": ".yml",
+      "mtime": 1782765070.4318686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/.github/workflows/test.yml": {
+      "ext": ".yml",
+      "mtime": 1782765070.4318686
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/CHANGELOG.md": {
+      "ext": ".md",
+      "mtime": 1782765070.4358687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/README.md": {
+      "ext": ".md",
+      "mtime": 1782765070.4358687
+    },
+    "/home/stanislasius/Projects/Personal/obsidian-pm/pnpm-workspace.yaml": {
+      "ext": ".yaml",
+      "mtime": 1782765070.4398687
+    }
+  },
+  "timestamp": "2026-06-29T20:35:44.218324+00:00"
+}

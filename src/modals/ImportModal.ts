@@ -343,8 +343,8 @@ export class ImportModal extends Modal {
             priority: this.defaultPriority
           })
 
-          // Generate file path for task
-          const newFilePath = taskFilePath(task.title, tasksFolder)
+          // Generate file path for task (unique via id)
+          const newFilePath = taskFilePath(task.title, tasksFolder).replace(/\.md$/, `-${task.id.slice(0, 10)}.md`)
 
           // Serialize task to file content
           const newContent = serializeTask(task, this.project, null)

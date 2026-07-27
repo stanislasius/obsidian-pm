@@ -1,6 +1,6 @@
 import { ButtonComponent, Menu } from 'obsidian'
 import type { Project, FilterState, StatusConfig, PriorityConfig, TaskPriority, DueDateFilter } from '../../../types'
-import { collectAllAssignees, collectAllTags } from '../../../store'
+import { collectAllTags } from '../../../store'
 import { countActiveFilters } from '../../../store/TaskFilter'
 import { renderFilterDropdown } from '../../FilterDropdown'
 import { Pill } from '../../primitives/Pill'
@@ -65,20 +65,6 @@ export class FilterRow {
         notify()
       }
     )
-
-    const allAssignees = collectAllAssignees(project.tasks)
-    if (allAssignees.length) {
-      renderFilterDropdown(
-        this.el,
-        'Assignee',
-        filter.assignees,
-        allAssignees.map((a) => ({ id: a, label: a })),
-        (selected) => {
-          filter.assignees = selected
-          notify()
-        }
-      )
-    }
 
     const allTags = collectAllTags(project.tasks)
     if (allTags.length) {

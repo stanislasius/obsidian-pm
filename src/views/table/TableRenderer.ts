@@ -7,7 +7,7 @@ import { openTaskModal } from '../../ui/ModalFactory'
 import { compareTask } from './TableFilters'
 import { renderTaskRow, updateSelectedRow, updateSelectAllCheckbox } from './TableRow'
 
-type SortKey = 'title' | 'status' | 'priority' | 'due' | 'assignees' | 'progress'
+type SortKey = 'title' | 'status' | 'priority' | 'due' | 'progress'
 type SortDir = 'asc' | 'desc'
 
 export type { SortKey, SortDir }
@@ -88,7 +88,6 @@ export function renderTable(ctx: TableContext): void {
     { key: 'title', label: 'Task', width: 'auto' },
     { key: 'status', label: 'Status', width: '130px' },
     { key: 'priority', label: 'Priority', width: '110px' },
-    { key: 'assignees', label: 'Assignees', width: '140px' },
     { key: 'due', label: 'Due', width: '110px' },
     { key: 'progress', label: 'Progress', width: '120px' },
     { key: null, label: 'Time', width: '90px' }

@@ -114,13 +114,6 @@ export class TableView implements SubView {
         case 'set-priority':
           await this.plugin.store.updateTasks(this.project, ids, { priority: action.priority })
           break
-        case 'set-assignee':
-          if (action.assignee === '') {
-            await this.plugin.store.updateTasks(this.project, ids, { assignees: [] })
-          } else {
-            await this.bulkAddToArray(ids, 'assignees', action.assignee)
-          }
-          break
         case 'set-tag':
           if (action.tag === '') {
             await this.plugin.store.updateTasks(this.project, ids, { tags: [] })
@@ -188,7 +181,7 @@ export class TableView implements SubView {
     }
   }
 
-  private async bulkAddToArray(ids: string[], field: 'assignees' | 'tags', value: string): Promise<void> {
+  private async bulkAddToArray(ids: string[], field: 'tags', value: string): Promise<void> {
     await this.plugin.store.updateTasks(this.project, ids, (task) =>
       task[field].includes(value) ? null : { [field]: [...task[field], value] }
     )

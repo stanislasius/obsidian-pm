@@ -21,6 +21,16 @@ export interface TimeLog {
   note: string
 }
 
+export interface SubtaskTemplate {
+  title: string
+}
+
+export interface TaskTemplate {
+  id: string
+  name: string
+  subtasks: SubtaskTemplate[]
+}
+
 export interface CustomFieldDef {
   id: string
   name: string
@@ -40,7 +50,6 @@ export interface Task {
   due: string // YYYY-MM-DD, empty string = unset
   progress: number // 0–100
   completed: string // YYYY-MM-DD, empty string = not completed; stamped when status becomes complete
-  assignees: string[]
   tags: string[]
   subtasks: Task[]
   dependencies: string[] // task IDs
@@ -64,7 +73,7 @@ export interface Project {
   icon: string // emoji
   tasks: Task[]
   customFields: CustomFieldDef[]
-  teamMembers: string[]
+  taskTemplates: TaskTemplate[]
   createdAt: string
   updatedAt: string
   filePath: string // resolved vault path
@@ -77,7 +86,6 @@ export interface FilterState {
   text: string
   statuses: TaskStatus[]
   priorities: TaskPriority[]
-  assignees: string[]
   tags: string[]
   dueDateFilter: DueDateFilter
   showArchived: boolean
@@ -119,7 +127,6 @@ export interface PMSettings {
   ganttWeekLabel: GanttWeekLabel
   statuses: StatusConfig[]
   priorities: PriorityConfig[]
-  globalTeamMembers: string[]
   notificationsEnabled: boolean
   notificationLeadDays: number
   autoSchedule: boolean
@@ -157,7 +164,6 @@ export const DEFAULT_SETTINGS: PMSettings = {
   ganttWeekLabel: 'weekNumber',
   statuses: DEFAULT_STATUSES,
   priorities: DEFAULT_PRIORITIES,
-  globalTeamMembers: [],
   kanbanShowSubtasks: false,
   kanbanShowDescriptionPreview: false,
   notificationsEnabled: true,
@@ -172,7 +178,7 @@ export const DEFAULT_SETTINGS: PMSettings = {
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 export function makeId(): string {
-  return Math.random().toString(36).slice(2, 10) + Date.now().toString(36)
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 6)
 }
 
 export function makeTask(overrides: Partial<Task> = {}): Task {
@@ -188,7 +194,6 @@ export function makeTask(overrides: Partial<Task> = {}): Task {
     due: '',
     progress: 0,
     completed: '',
-    assignees: [],
     tags: [],
     subtasks: [],
     dependencies: [],
@@ -197,6 +202,14 @@ export function makeTask(overrides: Partial<Task> = {}): Task {
     createdAt: now,
     updatedAt: now,
     ...overrides
+  }
+}
+
+export function makeTemplate(name: string): TaskTemplate {
+  return {
+    id: makeId(),
+    name,
+    subtasks: []
   }
 }
 
@@ -210,7 +223,7 @@ export function makeProject(title: string, filePath: string): Project {
     icon: '📋',
     tasks: [],
     customFields: [],
-    teamMembers: [],
+    taskTemplates: [],
     createdAt: now,
     updatedAt: now,
     filePath,
@@ -224,7 +237,6 @@ export function makeDefaultFilter(): FilterState {
     text: '',
     statuses: [],
     priorities: [],
-    assignees: [],
     tags: [],
     dueDateFilter: 'any',
     showArchived: false

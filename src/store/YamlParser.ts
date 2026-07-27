@@ -2,6 +2,7 @@ import { parseYaml } from 'obsidian'
 
 export const FRONTMATTER_KEY = 'pm-project'
 export const TASK_FRONTMATTER_KEY = 'pm-task'
+export const TEMPLATE_FRONTMATTER_KEY = 'pm-template'
 
 // ─── Parse ──────────────────────────────────────────────────────────────────
 

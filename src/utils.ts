@@ -2,13 +2,6 @@ import { Notice } from 'obsidian'
 import type { Task, StatusConfig, PriorityConfig, TaskPriority } from './types'
 import { today, parsePlainDate, Temporal } from './dates'
 
-/** Deterministic HSL color from a string (e.g. assignee name) */
-export function stringToColor(s: string): string {
-  let hash = 0
-  for (let i = 0; i < s.length; i++) hash = s.charCodeAt(i) + ((hash << 5) - hash)
-  return `hsl(${Math.abs(hash) % 360}, 55%, 45%)`
-}
-
 /** Short date: "dd-mm" */
 export function formatDateShort(iso: string): string {
   if (!iso) return ''

@@ -1,6 +1,6 @@
 import { ButtonComponent, ExtraButtonComponent, Menu } from 'obsidian'
 import type { Task, TaskStatus, TaskPriority } from '../../types'
-import { flattenTasks, collectAllAssignees, collectAllTags } from '../../store'
+import { flattenTasks, collectAllTags } from '../../store'
 import { findTaskById } from '../../store/TaskIndex'
 import { formatBadgeText } from '../../utils'
 import { today } from '../../dates'
@@ -12,7 +12,6 @@ import { updateSelectAllCheckbox } from './TableRow'
 export type BulkAction =
   | { type: 'set-status'; status: TaskStatus }
   | { type: 'set-priority'; priority: TaskPriority }
-  | { type: 'set-assignee'; assignee: string }
   | { type: 'set-tag'; tag: string }
   | { type: 'set-due-date'; due: string }
   | { type: 'set-progress'; progress: number }
@@ -80,30 +79,6 @@ function updateBarContent(bar: HTMLElement, ctx: TableContext, onAction: (a: Bul
           .onClick(() => onAction({ type: 'set-priority', priority: p.id }))
       )
     }
-    menu.showAtMouseEvent(e)
-  })
-
-  // Assignee button
-  new ButtonComponent(left).setButtonText('Set assignee').onClick((e) => {
-    const menu = new Menu()
-    const allMembers = collectAllAssignees(ctx.project.tasks, [
-      ...ctx.project.teamMembers,
-      ...ctx.plugin.settings.globalTeamMembers
-    ])
-    for (const m of allMembers) {
-      menu.addItem((item) => item.setTitle(m).onClick(() => onAction({ type: 'set-assignee', assignee: m })))
-    }
-    menu.addSeparator()
-    menu.addItem((item) =>
-      item.setTitle('+ new assignee...').onClick(async () => {
-        const name = await promptText(ctx.plugin.app, 'Enter assignee name:', 'Name')
-        if (name) onAction({ type: 'set-assignee', assignee: name })
-      })
-    )
-    menu.addSeparator()
-    menu.addItem((item) =>
-      item.setTitle('Clear assignees').onClick(() => onAction({ type: 'set-assignee', assignee: '' }))
-    )
     menu.showAtMouseEvent(e)
   })
 

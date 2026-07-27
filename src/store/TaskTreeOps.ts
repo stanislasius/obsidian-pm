@@ -100,7 +100,6 @@ function cloneNode(source: Task, includeSubtasks: boolean, idMap: Map<string, st
     collapsed: false,
     subtasks: includeSubtasks ? source.subtasks.map((s) => cloneNode(s, true, idMap)) : [],
     dependencies: [...source.dependencies],
-    assignees: [...source.assignees],
     tags: [...source.tags],
     customFields: { ...source.customFields },
     timeLogs: source.timeLogs ? source.timeLogs.map((l) => ({ ...l })) : undefined,
@@ -136,20 +135,6 @@ export function filterArchived(tasks: Task[]): Task[] {
   return tasks
     .filter((t) => !t.archived)
     .map((t) => (t.subtasks.length ? { ...t, subtasks: filterArchived(t.subtasks) } : t))
-}
-
-/** Collect all unique assignees from a task tree */
-export function collectAllAssignees(tasks: Task[], extra?: string[]): string[] {
-  const set = new Set<string>()
-  if (extra) for (const m of extra) set.add(m)
-  const walk = (list: Task[]) => {
-    for (const t of list) {
-      for (const a of t.assignees) set.add(a)
-      walk(t.subtasks)
-    }
-  }
-  walk(tasks)
-  return [...set].filter(Boolean).sort()
 }
 
 /** Collect all unique tags from a task tree */

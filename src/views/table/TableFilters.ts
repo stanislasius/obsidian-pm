@@ -19,8 +19,6 @@ export function compareTask(
       return dir * priorityOrder(a.priority) - dir * priorityOrder(b.priority)
     case 'due':
       return dir * (a.due || 'zzz').localeCompare(b.due || 'zzz')
-    case 'assignees':
-      return dir * (a.assignees[0] ?? '').localeCompare(b.assignees[0] ?? '')
     case 'progress':
       return dir * (a.progress - b.progress)
     default: {

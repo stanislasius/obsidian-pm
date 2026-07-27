@@ -234,61 +234,6 @@ export function renderTaskFormFields(container: HTMLElement, ctx: TaskFormFields
     return wrap
   })
 
-  // Assignees
-  renderPropRow(container, 'Assignees', () => {
-    const wrap = createDiv('pm-prop-value pm-prop-assignees')
-    const render = () => {
-      const all = [...new Set([...project.teamMembers, ...plugin.settings.globalTeamMembers])]
-      const remaining = all.filter((m) => !task.assignees.includes(m))
-      renderChipList(wrap, task.assignees, {
-        variant: 'accent',
-        shape: 'pill',
-        onRemove: (a) => {
-          task.assignees = task.assignees.filter((x) => x !== a)
-          render()
-        },
-        renderAdd: (el) => {
-          const addBtn = el.createEl('button', { text: '+ add', cls: 'pm-prop-add-btn' })
-          const showNameInput = () => {
-            addBtn.addClass('pm-hidden')
-            const input = el.createEl('input', { type: 'text', cls: 'pm-tag-input', placeholder: 'Name\u2026' })
-            input.focus()
-            const commit = () => {
-              const name = input.value.trim()
-              if (name && !task.assignees.includes(name)) task.assignees.push(name)
-              render()
-            }
-            input.addEventListener('keydown', (ev) => {
-              if (ev.key === 'Enter') commit()
-              if (ev.key === 'Escape') render()
-            })
-            input.addEventListener('blur', commit)
-          }
-          addBtn.addEventListener('click', (ev) => {
-            if (remaining.length) {
-              const menu = new Menu()
-              for (const m of remaining) {
-                menu.addItem((item) =>
-                  item.setTitle(m).onClick(() => {
-                    task.assignees.push(m)
-                    render()
-                  })
-                )
-              }
-              menu.addSeparator()
-              menu.addItem((item) => item.setTitle('Type a name\u2026').onClick(() => showNameInput()))
-              menu.showAtMouseEvent(ev)
-            } else {
-              showNameInput()
-            }
-          })
-        }
-      })
-    }
-    render()
-    return wrap
-  })
-
   // Tags
   renderPropRow(container, 'Tags', () => {
     const wrap = createDiv('pm-prop-value pm-prop-tags')

@@ -1,6 +1,6 @@
 import { App, ButtonComponent, Component, ExtraButtonComponent, Modal, MarkdownRenderer, Notice } from 'obsidian'
 import type PMPlugin from '../main'
-import { Project, Task, makeTask } from '../types'
+import { Project, Task, TaskTemplate, makeTask, makeId, makeTemplate } from '../types'
 import { flattenTasks } from '../store/TaskTreeOps'
 import { TaskFileNameConflictError } from '../store'
 import { safeAsync, getDefaultStatusId } from '../utils'
@@ -19,6 +19,7 @@ export class TaskModal extends Modal {
   private saved = false
   private persistPromise: Promise<void> | null = null
   private noteSuggest: NoteLinkSuggest | null = null
+  private selectedTemplateId: string | null = null
 
   constructor(
     app: App,
@@ -371,8 +372,47 @@ export class TaskModal extends Modal {
     // ── Time Tracking ───────────────────────────────────────────────────────
     renderTimeTrackingPanel(contentEl, this.task)
 
+    // ── Subtask template selector ───────────────────────────────────────────
+    const tplSection = contentEl.createDiv('pm-modal-section')
+    const tplWrap = tplSection.createDiv('pm-template-selector')
+    tplWrap.createSpan({ text: 'Template:', cls: 'pm-modal-section-title' })
+    if (this.project.taskTemplates.length > 0) {
+      const tplSelect = tplWrap.createEl('select', { cls: 'pm-input pm-select pm-template-select' })
+      tplSelect.createEl('option', { value: '', text: '— No template —' })
+      for (const t of this.project.taskTemplates) {
+        const opt = tplSelect.createEl('option', { value: t.id, text: t.name })
+        if (t.id === this.selectedTemplateId) opt.selected = true
+      }
+      tplSelect.addEventListener('change', () => {
+        const id = tplSelect.value
+        if (id) {
+          const tpl = this.project.taskTemplates.find((t) => t.id === id)
+          if (tpl) {
+            this.task.subtasks = tpl.subtasks.map((s) => makeTask({ title: s.title, type: 'subtask' }))
+            this.selectedTemplateId = id
+          }
+        } else {
+          this.task.subtasks = []
+          this.selectedTemplateId = null
+        }
+        this.render()
+      })
+    } else {
+      tplWrap.createSpan({
+        text: 'No templates yet. Add subtasks below and click "+ Save as template".',
+        cls: 'pm-modal-hint'
+      })
+    }
+
     // ── Subtasks ────────────────────────────────────────────────────────────
-    renderSubtasksPanel(contentEl, this.task, this.plugin)
+    renderSubtasksPanel(contentEl, this.task, this.plugin, this.project, async (name, titles) => {
+      const newTpl = makeTemplate(name)
+      newTpl.subtasks = titles.map((t) => ({ title: t }))
+      await this.plugin.store.saveTemplate(this.project, newTpl)
+      this.selectedTemplateId = newTpl.id
+      new Notice(`Template "${name}" saved`)
+      this.render()
+    })
 
     // ── Footer ──────────────────────────────────────────────────────────────
     const footer = contentEl.createDiv('pm-modal-footer')

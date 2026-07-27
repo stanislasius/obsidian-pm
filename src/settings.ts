@@ -162,29 +162,6 @@ export class PMSettingTab extends PluginSettingTab {
           })
       )
 
-    // ── Team Members ──────────────────────────────────────────────────────────
-    new Setting(containerEl).setName('Team members').setHeading()
-
-    containerEl.createEl('p', {
-      cls: 'pm-settings-desc',
-      text: 'Global list of people available as assignees across all projects.'
-    })
-    // margin handled by .pm-settings-desc CSS class
-
-    const membersContainer = containerEl.createDiv('pm-settings-members')
-    this.renderMembersList(membersContainer)
-
-    new Setting(containerEl).addButton((btn) =>
-      btn
-        .setButtonText('+ add member')
-        .setCta()
-        .onClick(() => {
-          this.plugin.settings.globalTeamMembers.push('')
-          void this.plugin.saveSettings()
-          this.renderMembersList(membersContainer)
-        })
-    )
-
     // ── Statuses ──────────────────────────────────────────────────────────────
     new Setting(containerEl).setName('Statuses').setHeading()
     containerEl.createEl('p', {
@@ -212,27 +189,6 @@ export class PMSettingTab extends PluginSettingTab {
           this.renderStatusList(statusContainer)
         })
     )
-  }
-
-  private renderMembersList(container: HTMLElement): void {
-    container.empty()
-    const members = this.plugin.settings.globalTeamMembers
-    members.forEach((m, i) => {
-      const row = container.createDiv('pm-settings-member-row')
-      const input = row.createEl('input', { type: 'text', value: m })
-      input.placeholder = 'Name'
-      input.addEventListener('change', () => {
-        this.plugin.settings.globalTeamMembers[i] = input.value
-        void this.plugin.saveSettings()
-      })
-      const del = row.createEl('button', { text: '✕' })
-      del.addClass('pm-settings-del')
-      del.addEventListener('click', () => {
-        this.plugin.settings.globalTeamMembers.splice(i, 1)
-        void this.plugin.saveSettings()
-        this.renderMembersList(container)
-      })
-    })
   }
 
   private async remapOrphanTasks(deletedId: string, deletedLabel: string): Promise<void> {

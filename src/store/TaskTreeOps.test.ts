@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest'
 import { makeTask, type Task } from '../types'
 import {
   addTaskToTree,
-  collectAllAssignees,
   collectAllTags,
   deleteTaskFromTree,
   filterArchived,
@@ -164,26 +163,6 @@ describe('filterArchived', () => {
     const original = [task({ id: 'a', archived: true })]
     filterArchived(original)
     expect(original.map((t) => t.id)).toEqual(['a'])
-  })
-})
-
-describe('collectAllAssignees', () => {
-  it('returns a sorted, deduplicated list across nested tasks', () => {
-    const tasks = [
-      task({ id: 'a', assignees: ['Bob', 'Alice'] }),
-      task({ id: 'b', subtasks: [task({ id: 'b1', assignees: ['Alice', 'Carol'] })] })
-    ]
-    expect(collectAllAssignees(tasks)).toEqual(['Alice', 'Bob', 'Carol'])
-  })
-
-  it('merges the extra list in', () => {
-    const tasks = [task({ id: 'a', assignees: ['Alice'] })]
-    expect(collectAllAssignees(tasks, ['Dave'])).toEqual(['Alice', 'Dave'])
-  })
-
-  it('filters out empty strings', () => {
-    const tasks = [task({ id: 'a', assignees: ['', 'Alice'] })]
-    expect(collectAllAssignees(tasks)).toEqual(['Alice'])
   })
 })
 

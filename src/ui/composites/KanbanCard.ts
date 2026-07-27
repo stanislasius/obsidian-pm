@@ -1,6 +1,5 @@
 import type { Task } from '../../types'
 import { formatDateShort } from '../../utils'
-import { AvatarStack } from '../primitives/AvatarStack'
 import { Chip } from '../primitives/Chip'
 import { ProgressBar } from '../primitives/ProgressBar'
 import { TimeChip } from '../primitives/TimeChip'
@@ -96,8 +95,6 @@ export class KanbanCard {
     }
 
     const footer = body.createDiv('pm-kanban-card-footer')
-    new AvatarStack(footer).setNames(task.assignees).setMax(3).setSize('sm')
-
     if (task.due) {
       const dueChip = new Chip(footer).setLabel(formatDateShort(task.due)).setSize('sm')
       if (props.overdue) {

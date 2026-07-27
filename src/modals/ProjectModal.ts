@@ -1,10 +1,8 @@
 import { App, ButtonComponent, Modal } from 'obsidian'
 import type PMPlugin from '../main'
-import { Project, CustomFieldDef, makeId, makeProject } from '../types'
+import { Project, CustomFieldDef, TaskTemplate, makeId, makeProject, makeTemplate } from '../types'
 import { rebuildTaskIndex } from '../store'
 import { safeAsync } from '../utils'
-import { Avatar } from '../ui/primitives/Avatar'
-
 const PROJECT_COLORS = [
   '#8b72be',
   '#7c6b9a',
@@ -141,47 +139,6 @@ export class ProjectModal extends Modal {
       this.project.description = descArea.value
     })
 
-    // ── Team members ──────────────────────────────────────────────────────────
-    const memberSection = el.createDiv('pm-modal-section')
-    memberSection.createEl('label', { text: 'Team members', cls: 'pm-label' })
-    const memberWrap = memberSection.createDiv('pm-member-list')
-    const renderMembers = () => {
-      memberWrap.empty()
-      for (let i = 0; i < this.project.teamMembers.length; i++) {
-        const row = memberWrap.createDiv('pm-member-row')
-        const name = this.project.teamMembers[i] || '?'
-        new Avatar(row).setName(name)
-        const input = row.createEl('input', {
-          type: 'text',
-          value: this.project.teamMembers[i],
-          cls: 'pm-input pm-member-input'
-        })
-        input.placeholder = 'Name'
-        input.addEventListener('change', () => {
-          this.project.teamMembers[i] = input.value
-          renderMembers()
-        })
-        const rm = row.createEl('button', { text: '✕', cls: 'pm-settings-del' })
-        rm.addEventListener('click', () => {
-          this.project.teamMembers.splice(i, 1)
-          renderMembers()
-        })
-      }
-      const addBtn = memberWrap.createEl('button', {
-        text: '+ add member',
-        cls: 'pm-prop-add-btn'
-      })
-      addBtn.addEventListener('click', () => {
-        this.project.teamMembers.push('')
-        renderMembers()
-        window.setTimeout(() => {
-          const inputs = memberWrap.querySelectorAll('input')
-          inputs[inputs.length - 1]?.focus()
-        }, 50)
-      })
-    }
-    renderMembers()
-
     // ── Custom fields ─────────────────────────────────────────────────────────
     const cfSection = el.createDiv('pm-modal-section')
     const cfHeader = cfSection.createDiv('pm-modal-section-header')
@@ -209,6 +166,32 @@ export class ProjectModal extends Modal {
       })
     }
     renderCFs()
+
+    // ── Task Templates ─────────────────────────────────────────────────────────
+    const tplSection = el.createDiv('pm-modal-section')
+    const tplHeader = tplSection.createDiv('pm-modal-section-header')
+    tplHeader.createSpan({ text: 'Task Templates', cls: 'pm-modal-subheading' })
+    tplHeader.createSpan({ text: 'Predefined subtask sets for new tasks', cls: 'pm-modal-hint' })
+
+    const tplList = tplSection.createDiv('pm-template-list')
+    const renderTpls = () => {
+      tplList.empty()
+      for (let i = 0; i < this.project.taskTemplates.length; i++) {
+        this.renderTemplateEditor(tplList, this.project.taskTemplates[i], i, renderTpls)
+      }
+      const addTplBtn = tplList.createEl('button', {
+        text: '+ add template',
+        cls: 'pm-prop-add-btn'
+      })
+      addTplBtn.addEventListener('click',
+        safeAsync(async () => {
+          const tpl = makeTemplate('New Template')
+          await this.plugin.store.saveTemplate(this.project, tpl)
+          renderTpls()
+        })
+      )
+    }
+    renderTpls()
 
     // ── Footer ────────────────────────────────────────────────────────────────
     const footer = el.createDiv('pm-modal-footer')
@@ -321,5 +304,76 @@ export class ProjectModal extends Modal {
       }
       renderOpts()
     }
+  }
+
+  private renderTemplateEditor(
+    container: HTMLElement,
+    tpl: TaskTemplate,
+    index: number,
+    rerender: () => void
+  ): void {
+    const row = container.createDiv('pm-template-row')
+
+    const header = row.createDiv('pm-template-header')
+    const nameInput = header.createEl('input', {
+      type: 'text',
+      value: tpl.name,
+      cls: 'pm-input pm-template-name'
+    })
+    nameInput.placeholder = 'Template name'
+    nameInput.addEventListener('change',
+      safeAsync(async () => {
+        this.project.taskTemplates[index].name = nameInput.value
+        await this.plugin.store.saveTemplate(this.project, this.project.taskTemplates[index])
+      })
+    )
+
+    const rmBtn = header.createEl('button', { text: '✕', cls: 'pm-settings-del' })
+    rmBtn.addEventListener('click',
+      safeAsync(async () => {
+        await this.plugin.store.deleteTemplate(this.project, tpl.id)
+        rerender()
+      })
+    )
+
+    const stList = row.createDiv('pm-st-list')
+    const renderSts = () => {
+      stList.empty()
+      for (let j = 0; j < tpl.subtasks.length; j++) {
+        const stRow = stList.createDiv('pm-st-row')
+        const stInput = stRow.createEl('input', {
+          type: 'text',
+          value: tpl.subtasks[j].title,
+          cls: 'pm-input pm-st-input'
+        })
+        stInput.placeholder = 'Subtask title'
+        stInput.addEventListener('change',
+          safeAsync(async () => {
+            this.project.taskTemplates[index].subtasks[j].title = stInput.value
+            await this.plugin.store.saveTemplate(this.project, this.project.taskTemplates[index])
+          })
+        )
+        const rmStBtn = stRow.createEl('button', { text: '✕', cls: 'pm-settings-del' })
+        rmStBtn.addEventListener('click',
+          safeAsync(async () => {
+            this.project.taskTemplates[index].subtasks.splice(j, 1)
+            await this.plugin.store.saveTemplate(this.project, this.project.taskTemplates[index])
+            renderSts()
+          })
+        )
+      }
+      const addStBtn = stList.createEl('button', {
+        text: '+ add subtask',
+        cls: 'pm-prop-add-btn pm-prop-add-btn--sm'
+      })
+      addStBtn.addEventListener('click',
+        safeAsync(async () => {
+          this.project.taskTemplates[index].subtasks.push({ title: '' })
+          await this.plugin.store.saveTemplate(this.project, this.project.taskTemplates[index])
+          renderSts()
+        })
+      )
+    }
+    renderSts()
   }
 }

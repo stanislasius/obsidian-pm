@@ -94,10 +94,6 @@ export function renderCustomFieldInput(
       const input = wrap.createEl('input', { type: 'text', cls: 'pm-prop-text' })
       input.value = stringifyCustomValue(currentVal)
       input.placeholder = 'Person name'
-      const all = [...new Set([...project.teamMembers, ...plugin.settings.globalTeamMembers])]
-      input.setAttribute('list', `pm-persons-${cf.id}`)
-      const dl = wrap.createEl('datalist', { attr: { id: `pm-persons-${cf.id}` } })
-      for (const m of all) dl.createEl('option', { value: m })
       input.addEventListener('change', () => {
         task.customFields[cf.id] = input.value
       })

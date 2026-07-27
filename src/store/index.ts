@@ -22,7 +22,6 @@ export type { TaskIndex, TaskIndexEntry } from './TaskIndex'
 export {
   addTaskToTree,
   cloneTaskSubtree,
-  collectAllAssignees,
   collectAllTags,
   deleteTaskFromTree,
   filterArchived,
