@@ -1,6 +1,6 @@
 import { App, PluginSettingTab, Setting, Notice } from 'obsidian'
 import type PMPlugin from './main'
-import { PMSettings, DEFAULT_SETTINGS, makeId } from './types'
+import { type PMSettings, DEFAULT_SETTINGS, makeId } from './types'
 import { flattenTasks } from './store/TaskTreeOps'
 import { renderPriorityListEditor, renderStatusListEditor } from './ui/PaletteListEditor'
 
