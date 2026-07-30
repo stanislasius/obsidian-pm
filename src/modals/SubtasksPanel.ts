@@ -52,7 +52,7 @@ export function renderSubtasksPanel(
     })
 
     if (task.subtasks.length > 0 && onSaveAsTemplate) {
-      new ButtonComponent(subHeader).setButtonText('+ Save as template').onClick(async () => {
+      new ButtonComponent(subHeader).setButtonText('+ save as template').onClick(async () => {
         const name = await promptText(plugin.app, 'Template name', 'Template name')
         if (name) {
           await onSaveAsTemplate(name, task.subtasks.map((s) => s.title))

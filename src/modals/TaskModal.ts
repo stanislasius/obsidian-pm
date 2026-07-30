@@ -11,7 +11,7 @@ import {
   setTooltip
 } from 'obsidian'
 import type PMPlugin from '../main'
-import { type Project, type Task, makeTask } from '../types'
+import { type Project, type Task, makeTask, makeTemplate } from '../types'
 import { flattenTasks } from '../store/TaskTreeOps'
 import { TaskFileNameConflictError } from '../store'
 import { safeAsync, getDefaultStatusId, getDefaultPriorityId, getPriorityConfig } from '../utils'
@@ -444,37 +444,6 @@ export class TaskModal extends Modal {
     })
     this.noteSuggest.attach(descSection)
 
-    // Walk the rendered text and the markdown source in step, skipping the source
-    // characters that produced no output, so a caret in the preview lands on the
-    // character that rendered it rather than on the syntax around it.
-    const sourceOffsetOf = (renderedIndex: number) => {
-      const rendered = descPreview.textContent || ''
-      const src = this.task.description
-      const plain = (c: string) => (/\s/.test(c) ? ' ' : c)
-      let cursor = 0
-      for (let i = 0; i < renderedIndex && i < rendered.length; i++) {
-        const ch = plain(rendered[i])
-        while (cursor < src.length && plain(src[cursor]) !== ch) cursor++
-        cursor++
-      }
-      return Math.min(cursor, src.length)
-    }
-
-    const clickedSourceOffset = (e: MouseEvent) => {
-      const doc = descPreview.ownerDocument
-      const caret = doc.caretPositionFromPoint?.(e.clientX, e.clientY)
-      const node = caret?.offsetNode
-      if (!node || node.nodeType !== Node.TEXT_NODE || !descPreview.contains(node)) return undefined
-      const walker = doc.createTreeWalker(descPreview, NodeFilter.SHOW_TEXT)
-      let rendered = 0
-      let current = walker.nextNode()
-      while (current && current !== node) {
-        rendered += (current.textContent || '').length
-        current = walker.nextNode()
-      }
-      return current ? sourceOffsetOf(rendered + caret.offset) : undefined
-    }
-
     descPreview.addEventListener('click', (e) => {
       const target = e.target as HTMLElement
       if (target.instanceOf(HTMLInputElement) && target.type === 'checkbox') return
@@ -511,7 +480,7 @@ export class TaskModal extends Modal {
     tplWrap.createSpan({ text: 'Template:', cls: 'pm-modal-section-title' })
     if (this.project.taskTemplates.length > 0) {
       const tplSelect = tplWrap.createEl('select', { cls: 'pm-input pm-select pm-template-select' })
-      tplSelect.createEl('option', { value: '', text: '— No template —' })
+      tplSelect.createEl('option', { value: '', text: '— no template —' })
       for (const t of this.project.taskTemplates) {
         const opt = tplSelect.createEl('option', { value: t.id, text: t.name })
         if (t.id === this.selectedTemplateId) opt.selected = true

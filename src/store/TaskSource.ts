@@ -1,5 +1,5 @@
 import type { Plugin, TFile } from 'obsidian'
-import type { Project, ResolvedProjectConfig, Task, TaskPriority, TaskStatus } from '../types'
+import type { Project, ResolvedProjectConfig, Task, TaskPriority, TaskStatus, TaskTemplate } from '../types'
 import type { TaskFileNameConflictError } from './ProjectStore'
 
 export interface ImportNoteOptions {
@@ -57,4 +57,8 @@ export interface TaskSource {
   scheduleAfterChange(project: Project, changedTaskId?: string): Promise<number>
   saveTaskAttachment(project: Project, task: Task, fileName: string, data: ArrayBuffer): Promise<TFile>
   findTaskFileConflict(project: Project, task: Task): TaskFileNameConflictError | null
+
+  loadTemplates(project: Project): Promise<void>
+  saveTemplate(project: Project, template: TaskTemplate): Promise<void>
+  deleteTemplate(project: Project, templateId: string): Promise<void>
 }

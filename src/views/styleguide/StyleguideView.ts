@@ -6,7 +6,6 @@ import { renderDueChip } from '../../ui/composites/dueChip'
 import { renderTagChip } from '../../ui/composites/tagChip'
 import { renderTimeChip } from '../../ui/composites/timeChip'
 import { ActionsCell } from '../../ui/composites/cells/ActionsCell'
-import { AssigneesCell } from '../../ui/composites/cells/AssigneesCell'
 import { DueDateCell } from '../../ui/composites/cells/DueDateCell'
 import { ExpandCell } from '../../ui/composites/cells/ExpandCell'
 import { PriorityCell } from '../../ui/composites/cells/PriorityCell'
@@ -312,7 +311,6 @@ export class StyleguideView extends ItemView {
         type: 'milestone',
         priority: 'critical',
         due: '2026-06-20',
-        assignees: ['Ada Lovelace', 'Grace Hopper'],
         tags: ['design', 'frontend']
       }),
       priorityColor: '#c47070',
@@ -347,7 +345,6 @@ export class StyleguideView extends ItemView {
           priority: 'high',
           due: '2026-07-20',
           progress: 60,
-          assignees: ['Ada Lovelace', 'Grace Hopper'],
           subtasks: [makeTask({ title: 'Pick a layout' })]
         }),
         props: { depth: 0, isDone: false, isSelected: false },
@@ -360,8 +357,7 @@ export class StyleguideView extends ItemView {
           status: 'blocked',
           priority: 'critical',
           due: '2026-06-20',
-          progress: 20,
-          assignees: ['Alan Turing']
+          progress: 20
         }),
         props: { depth: 1, isDone: false, isSelected: true },
         urgency: 'overdue',
@@ -391,7 +387,6 @@ export class StyleguideView extends ItemView {
       new DueDateCell(tr.el, { task, urgency, onSave: noopAsync })
       new TimeCell(tr.el, time)
       new ProgressCell(tr.el, { value: task.progress, color: 'var(--interactive-accent)' })
-      new AssigneesCell(tr.el, task.assignees)
       new ActionsCell(tr.el, { onClick: noop })
     }
   }
