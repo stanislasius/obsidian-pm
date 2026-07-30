@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Status and priority icons accept emoji or any icon available in Obsidian, including Lucide icons and icons added by other plugins, with suggestions while typing in settings
 - Projects can define their own statuses and priorities in the project settings, replacing the global ones
 - Projects can override the default view, auto-scheduling, and the board display options in the project settings
+- Parent task status automatically follows the farthest-along active child (Feature 1)
+- Task auto-completes when progress reaches 100% (Feature 2)
+- Projects can configure the complete status (default: Done) in the project settings
 
 ### Changed
 

@@ -21,6 +21,7 @@ import {
   deleteTaskFromTree,
   flattenTasks,
   moveTaskInTree,
+  recalculateParentStatus,
   recalculateProgress,
   updateTaskInTree
 } from './TaskTreeOps'
@@ -985,18 +986,38 @@ export class ProjectStore implements TaskSource {
   }
 
   /**
-   * Walk up the ancestor chain and recalculate each parent's progress from its
-   * children. Only active when autoProgressMode is 'status'.
+   * Walk up the ancestor chain and recalculate each parent's progress (in
+   * 'status' mode) and status (always) from its children.
+   * Feature 1: parent status follows the farthest-along active child.
+   * Feature 2: parent auto-completes when progress reaches 100%.
    */
   private recalcAncestors(project: Project, taskId: string): void {
-    if (this.getAutoProgressMode() !== 'status') return
-    const statuses = this.getStatuses()
+    const isStatusMode = this.getAutoProgressMode() === 'status'
+    const config = this.configFor(project)
+    const statuses = config.statuses
     let currentId = findParentId(project, taskId)
     while (currentId) {
       const parent = findTaskById(project, currentId)
       if (!parent) break
-      parent.progress = recalculateProgress(parent, statuses)
-      this.markDirty(project, [currentId], 'fm')
+      let changed = false
+      if (isStatusMode) {
+        const p = recalculateProgress(parent, statuses)
+        if (parent.progress !== p) {
+          parent.progress = p
+          changed = true
+        }
+      }
+      const newStatus = recalculateParentStatus(parent, statuses, config.completeStatusId)
+      if (newStatus) {
+        parent.status = newStatus
+        changed = true
+      }
+      if (parent.progress === 100 && !isTerminalStatus(parent.status, statuses)) {
+        parent.status = config.completeStatusId
+        parent.completed = today().toString()
+        changed = true
+      }
+      if (changed) this.markDirty(project, [currentId], 'fm')
       currentId = findParentId(project, currentId)
     }
   }
@@ -1010,14 +1031,23 @@ export class ProjectStore implements TaskSource {
     // tree has the new one.
     const oldSubtree = task && patch.subtasks !== undefined ? flattenTasks(task.subtasks).map((f) => f.task) : []
     updateTaskInTree(project.tasks, taskId, patch)
+    let taskChanged = false
     if (task) {
       this.recalcAncestors(project, taskId)
+      const statuses = this.configFor(project)
       // When auto-progress is active, force-recalculate the task's own progress
       // from its subtasks so a stale patch value never sticks.
       if (this.getAutoProgressMode() === 'status' && task.subtasks.length) {
-        task.progress = recalculateProgress(task, this.getStatuses())
-        this.markDirty(project, [taskId], 'fm')
+        task.progress = recalculateProgress(task, statuses.statuses)
+        taskChanged = true
       }
+      // Feature 2: auto-complete when progress reaches 100%
+      if (task.progress === 100 && !isTerminalStatus(task.status, statuses.statuses)) {
+        task.status = statuses.completeStatusId
+        task.completed = today().toString()
+        taskChanged = true
+      }
+      if (taskChanged) this.markDirty(project, [taskId], 'fm')
     }
     const titleChanged = task && patch.title !== undefined && patch.title !== oldTitle
     // Title change renames the file, which forces the rename branch in saveTaskFile
@@ -1096,6 +1126,12 @@ export class ProjectStore implements TaskSource {
       const oldTitle = task.title
       updateTaskInTree(project.tasks, id, p)
       this.recalcAncestors(project, id)
+      // Feature 2: auto-complete when progress reaches 100%
+      const statuses = this.configFor(project)
+      if (task.progress === 100 && !isTerminalStatus(task.status, statuses.statuses)) {
+        task.status = statuses.completeStatusId
+        task.completed = today().toString()
+      }
       const titleChanged = p.title !== undefined && p.title !== oldTitle
       const kind: DirtyKind = patchNeedsBodyRewrite(p) || titleChanged ? 'full' : 'fm'
       this.markDirty(project, [id], kind)

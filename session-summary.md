@@ -73,3 +73,42 @@ name: Bug fix
 - Fix the root cause
 - Write tests
 ```
+
+---
+
+# Session Summary — Auto Status Changes
+
+## Goal
+
+Implement automatic status transitions based on task state:
+1. **Feature 1** — parent task status follows the status of its children (farthest-along active child wins)
+2. **Feature 2** — task auto-completes when its progress reaches 100%
+
+## What Changed
+
+### 1. `src/types.ts`
+- Added `completeStatusId?: string` to `ProjectConfig` — per-project override for which status counts as "complete"
+- Added `completeStatusId: string` to `ResolvedProjectConfig` — resolved value with fallback
+
+### 2. `src/store/ProjectConfig.ts`
+- `resolveProjectConfig()` now resolves `completeStatusId`: uses project override if valid, otherwise the first `complete: true` status in the list, falling back to `'done'`
+
+### 3. `src/store/TaskTreeOps.ts`
+- Added `recalculateParentStatus(parent, statuses, completeStatusId): string | null`
+  - If all children are terminal → returns `completeStatusId`
+  - If all non-terminal children are in the default status → returns default status id
+  - Otherwise → returns the status of the farthest-along active child (highest config index)
+
+### 4. `src/store/ProjectStore.ts`
+- `recalcAncestors()` — rewritten to always run (previously returned early when `autoProgressMode !== 'status'`):
+  - Progress recalculation only in `'status'` mode
+  - Status recalculation (Feature 1) always runs via `recalculateParentStatus()`
+  - Auto-complete check (Feature 2) — when `progress === 100` and status is not terminal, sets to `completeStatusId` and stamps today
+  - Only `markDirty` when something actually changed
+- `updateTask()` — Feature 2 check after patch application + auto-progress recalculation
+- `updateTasks()` — Feature 2 check for each task after `recalcAncestors`
+
+### 5. `src/modals/ProjectModal.ts`
+- `renderPaletteOverride()` — accepts optional `extraFooter` callback, re-rendered on toggle
+- Added `renderCompleteStatusSelect(container)` — dropdown listing all available statuses (custom if enabled, global otherwise), defaults to first `complete: true`
+- On change: `patchConfig('completeStatusId', value)`; on revert: `patchConfig('completeStatusId', undefined)`

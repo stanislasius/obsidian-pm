@@ -2,7 +2,7 @@ import { App, ButtonComponent, Modal } from 'obsidian'
 import type PMPlugin from '../main'
 import { type Project, type ProjectConfig, type CustomFieldDef, type TaskTemplate, makeId, makeProject, makeTemplate } from '../types'
 import { rebuildTaskIndex } from '../store'
-import { safeAsync } from '../utils'
+import { getCompleteStatusId, safeAsync } from '../utils'
 import { renderAddButton } from '../ui/composites/addButton'
 import { IconButton } from '../ui/primitives/IconButton'
 import { renderPriorityListEditor, renderStatusListEditor } from '../ui/PaletteListEditor'
@@ -189,7 +189,8 @@ export class ProjectModal extends Modal {
           statuses,
           // The modal edits a clone; everything persists on Save.
           onChanged: () => {}
-        })
+        }),
+      extraFooter: (container) => this.renderCompleteStatusSelect(container)
     })
 
     // ── Priorities ────────────────────────────────────────────────────────────
@@ -315,6 +316,7 @@ export class ProjectModal extends Modal {
       copyGlobal: () => T[]
       makeEntry: () => T
       renderEditor: (container: HTMLElement, items: T[]) => void
+      extraFooter?: (container: HTMLElement) => void
     }
   ): void {
     const section = el.createDiv('pm-modal-section')
@@ -329,16 +331,20 @@ export class ProjectModal extends Modal {
 
     const editor = section.createDiv('pm-settings-statuses')
     const footer = section.createDiv()
+    const extraContainer = section.createDiv()
     const renderEditor = () => {
       editor.empty()
       footer.empty()
+      extraContainer.empty()
       const own = opts.get()
-      if (!own?.length) return
-      opts.renderEditor(editor, own)
-      renderAddButton(footer, opts.addLabel, () => {
-        own.push(opts.makeEntry())
-        renderEditor()
-      })
+      if (own?.length) {
+        opts.renderEditor(editor, own)
+        renderAddButton(footer, opts.addLabel, () => {
+          own.push(opts.makeEntry())
+          renderEditor()
+        })
+      }
+      if (opts.extraFooter) opts.extraFooter(extraContainer)
     }
     checkbox.addEventListener('change', () => {
       // Starting from a copy of the global list keeps existing task values valid.
@@ -368,6 +374,32 @@ export class ProjectModal extends Modal {
     })
     select.addEventListener('change', () => {
       this.patchConfig(key, select.value === '' ? undefined : options[Number(select.value)].value)
+    })
+  }
+
+  private renderCompleteStatusSelect(container: HTMLElement): void {
+    const statuses = this.project.config?.statuses?.length
+      ? this.project.config.statuses
+      : this.plugin.settings.statuses
+
+    const row = container.createDiv('pm-config-override-row')
+    row.createEl('label', { text: 'Complete status', cls: 'pm-label' })
+    const select = row.createEl('select', { cls: 'pm-input pm-select' })
+
+    const current = this.project.config?.completeStatusId
+    const defaultId = getCompleteStatusId(statuses)
+    const defaultLabel = statuses.find((s) => s.id === defaultId)?.label ?? defaultId
+
+    const inherit = select.createEl('option', { value: '', text: `Use default (${defaultLabel})` })
+    inherit.selected = !current || current === defaultId
+
+    for (const s of statuses) {
+      const opt = select.createEl('option', { value: s.id, text: s.label })
+      if (current === s.id) opt.selected = true
+    }
+
+    select.addEventListener('change', () => {
+      this.patchConfig('completeStatusId', select.value || undefined)
     })
   }
 

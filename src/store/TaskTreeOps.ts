@@ -1,6 +1,6 @@
 import type { StatusConfig, Task } from '../types'
 import { makeId } from '../types'
-import { isTerminalStatus } from '../utils'
+import { isTerminalStatus, getDefaultStatusId } from '../utils'
 
 /** Flatten a task tree into a list, preserving depth info */
 export interface FlatTask {
@@ -165,4 +165,40 @@ export function recalculateProgress(task: Task, statuses: StatusConfig[]): numbe
   if (!task.subtasks.length) return task.progress
   const done = task.subtasks.filter((s) => isTerminalStatus(s.status, statuses)).length
   return Math.round((done / task.subtasks.length) * 100)
+}
+
+/**
+ * Determine the parent's status from its children's statuses.
+ * Returns the new status id or null if no change is needed.
+ */
+export function recalculateParentStatus(
+  parent: Task,
+  statuses: StatusConfig[],
+  completeStatusId: string
+): string | null {
+  if (!parent.subtasks.length) return null
+
+  const defaultStatusId = getDefaultStatusId(statuses)
+  const nonTerminal = parent.subtasks.filter((s) => !isTerminalStatus(s.status, statuses))
+  const active = nonTerminal.filter((s) => s.status !== defaultStatusId)
+
+  if (nonTerminal.length === 0) {
+    // All children are terminal
+    return parent.status === completeStatusId ? null : completeStatusId
+  }
+  if (active.length === 0) {
+    // All non-terminal children are in the default status
+    return parent.status === defaultStatusId ? null : defaultStatusId
+  }
+  // Pick the farthest-along active status (highest config index)
+  let target = active[0].status
+  let maxIdx = statuses.findIndex((s) => s.id === target)
+  for (let i = 1; i < active.length; i++) {
+    const idx = statuses.findIndex((s) => s.id === active[i].status)
+    if (idx > maxIdx) {
+      maxIdx = idx
+      target = active[i].status
+    }
+  }
+  return parent.status === target ? null : target
 }

@@ -1,4 +1,4 @@
-import type { PMSettings, Project, ResolvedProjectConfig, Task } from '../types'
+import type { PMSettings, Project, ResolvedProjectConfig, StatusConfig, Task } from '../types'
 import { flattenTasks } from './TaskTreeOps'
 
 const FALLBACK_COLOR = '#8a94a0'
@@ -13,14 +13,15 @@ const FALLBACK_COLOR = '#8a94a0'
  */
 export function resolveProjectConfig(project: Project, settings: PMSettings): ResolvedProjectConfig {
   const config = project.config
+  const statuses = withInUseExtras(
+    config?.statuses?.length ? config.statuses : settings.statuses,
+    settings.statuses,
+    project,
+    (task) => task.status,
+    (id) => ({ id, label: id, color: FALLBACK_COLOR, icon: '', complete: false })
+  )
   return {
-    statuses: withInUseExtras(
-      config?.statuses?.length ? config.statuses : settings.statuses,
-      settings.statuses,
-      project,
-      (task) => task.status,
-      (id) => ({ id, label: id, color: FALLBACK_COLOR, icon: '', complete: false })
-    ),
+    statuses,
     priorities: withInUseExtras(
       config?.priorities?.length ? config.priorities : settings.priorities,
       settings.priorities,
@@ -31,8 +32,15 @@ export function resolveProjectConfig(project: Project, settings: PMSettings): Re
     defaultView: config?.defaultView ?? settings.defaultView,
     autoSchedule: config?.autoSchedule ?? settings.autoSchedule,
     kanbanShowSubtasks: config?.kanbanShowSubtasks ?? settings.kanbanShowSubtasks,
-    kanbanShowDescriptionPreview: config?.kanbanShowDescriptionPreview ?? settings.kanbanShowDescriptionPreview
+    kanbanShowDescriptionPreview: config?.kanbanShowDescriptionPreview ?? settings.kanbanShowDescriptionPreview,
+    completeStatusId: resolveCompleteStatusId(config?.completeStatusId, statuses)
   }
+}
+
+function resolveCompleteStatusId(override: string | undefined, statuses: StatusConfig[]): string {
+  if (override && statuses.some((s) => s.id === override)) return override
+  const complete = statuses.find((s) => s.complete)
+  return complete ? complete.id : 'done'
 }
 
 function withInUseExtras<T extends { id: string }>(

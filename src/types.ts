@@ -126,6 +126,7 @@ export interface ProjectConfig {
   autoSchedule?: boolean
   kanbanShowSubtasks?: boolean
   kanbanShowDescriptionPreview?: boolean
+  completeStatusId?: string
 }
 
 /**
@@ -140,6 +141,7 @@ export interface ResolvedProjectConfig {
   autoSchedule: boolean
   kanbanShowSubtasks: boolean
   kanbanShowDescriptionPreview: boolean
+  completeStatusId: string
 }
 
 export interface PriorityConfig {
