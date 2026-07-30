@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "@2bad/axiom": "2.0.0",
-    "@2bad/tsconfig": "4.0.0",
     "@types/node": "26.1.1",
     "@typescript-eslint/parser": "8.65.0",
     "@vitest/coverage-v8": "4.1.10",
