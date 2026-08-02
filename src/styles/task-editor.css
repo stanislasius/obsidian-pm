@@ -379,8 +379,8 @@ input.pm-pop-field:focus {
   overflow: hidden;
 }
 
-/* The editor draws its own close button in the header row (matching the design),
-   so suppress Obsidian's native corner close button to avoid two X's. */
+/* The editor has an explicit Cancel button in the footer, so suppress Obsidian's
+   native corner close button to avoid two close affordances. */
 .pm-modal--task .modal-close-button {
   display: none;
 }

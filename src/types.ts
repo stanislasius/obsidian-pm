@@ -57,6 +57,7 @@ export interface Task {
   timeEstimate?: number // hours
   timeLogs?: TimeLog[]
   customFields: Record<string, unknown>
+  templateId?: string
   /** UI state, persisted per project in plugin settings (data.json), not in frontmatter. */
   collapsed: boolean
   createdAt: string

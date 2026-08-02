@@ -62,6 +62,7 @@ export class TaskModal extends Modal {
       this.isNew = true
     }
     this.originalParentId = this.parentId
+    this.selectedTemplateId = this.task.templateId ?? null
   }
 
   onOpen(): void {
@@ -69,8 +70,17 @@ export class TaskModal extends Modal {
     contentEl.empty()
     contentEl.addClass('pm-task-modal')
     this.modalEl.addClass('pm-modal', 'pm-modal--task')
-    void this.plugin.store.loadTemplates(this.project)
-    this.render()
+    this.modalEl.querySelector('.modal-close-button')?.remove()
+    this.modalEl.querySelector('.modal-header')?.remove()
+    void this.init()
+  }
+
+  private async init(): Promise<void> {
+    try {
+      await this.plugin.store.loadTemplates(this.project)
+    } finally {
+      this.render()
+    }
   }
 
   onClose(): void {
@@ -245,12 +255,6 @@ export class TaskModal extends Modal {
       moreBtn.extraSettingsEl.addClass('pm-te-header-btn')
       moreBtn.onClick(() => this.openOverflowMenu(moreBtn.extraSettingsEl))
     }
-    const closeBtn = new ExtraButtonComponent(header).setIcon('x').setTooltip('Close')
-    closeBtn.extraSettingsEl.addClass('pm-te-header-btn')
-    closeBtn.onClick(() => {
-      this.cancelled = true
-      this.close()
-    })
 
     const body = contentEl.createDiv('pm-te-body')
 
@@ -491,10 +495,12 @@ export class TaskModal extends Modal {
           const tpl = this.project.taskTemplates.find((t) => t.id === id)
           if (tpl) {
             this.task.subtasks = tpl.subtasks.map((s) => makeTask({ title: s.title, type: 'subtask' }))
+            this.task.templateId = id
             this.selectedTemplateId = id
           }
         } else {
           this.task.subtasks = []
+          this.task.templateId = undefined
           this.selectedTemplateId = null
         }
         this.render()
@@ -511,6 +517,7 @@ export class TaskModal extends Modal {
       const newTpl = makeTemplate(name)
       newTpl.subtasks = titles.map((t) => ({ title: t }))
       await this.plugin.store.saveTemplate(this.project, newTpl)
+      this.task.templateId = newTpl.id
       this.selectedTemplateId = newTpl.id
       new Notice(`Template "${name}" saved`)
       this.render()
